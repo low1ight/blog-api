@@ -15,6 +15,12 @@ export const blogQueryRepository = {
 
        return Blog.findById(id)
 
+    },
+
+    async isBlogExist(id:string):Promise<boolean> {
+        const result = await Blog.exists({_id:id})
+
+        return result !== null
     }
 }
 
