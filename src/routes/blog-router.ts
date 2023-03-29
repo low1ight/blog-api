@@ -1,5 +1,7 @@
 import {Router} from "express";
 import {deleteBlog, getBlogById, getBlogs, postBlog, putBlog} from "./controllers/blog-controller";
+import {blogValidator} from "../middlewares/validators/blogs/blogs-validator";
+import {errFormatter} from "../middlewares/validators/validationResult";
 
 
 
@@ -12,8 +14,8 @@ blogRouter.get('/', getBlogs)
 
 blogRouter.get('/:id', getBlogById)
 
-blogRouter.post('/', postBlog)
+blogRouter.post('/',blogValidator,errFormatter, postBlog)
 
-blogRouter.put('/:id', putBlog)
+blogRouter.put('/:id',blogValidator,errFormatter, putBlog)
 
 blogRouter.delete('/:id', deleteBlog)
