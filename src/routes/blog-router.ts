@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {deleteBlog, getBlogById, getBlogs, postBlog, putBlog} from "./controllers/blog-controller";
+import {blogController} from "./controllers/blog-controller";
 import {blogValidator} from "../middlewares/validators/blogs/blogs-validator";
 import {errFormatter} from "../middlewares/validators/validationResult";
 
@@ -10,12 +10,12 @@ export const blogRouter = Router()
 
 
 
-blogRouter.get('/', getBlogs)
+blogRouter.get('/',  blogController.getBlogs)
 
-blogRouter.get('/:id', getBlogById)
+blogRouter.get('/:id',  blogController.getBlogById)
 
-blogRouter.post('/',blogValidator,errFormatter, postBlog)
+blogRouter.post('/',blogValidator,errFormatter, blogController.postBlog)
 
-blogRouter.put('/:id',blogValidator,errFormatter, putBlog)
+blogRouter.put('/:id',blogValidator,errFormatter, blogController.putBlog)
 
-blogRouter.delete('/:id', deleteBlog)
+blogRouter.delete('/:id', blogController.deleteBlog)
