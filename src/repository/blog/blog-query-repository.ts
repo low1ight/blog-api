@@ -1,4 +1,4 @@
-import {Blog} from "../../db/models/blog";
+import {Blogs} from "../../db/models/blogs";
 
 
 export const blogQueryRepository = {
@@ -6,19 +6,19 @@ export const blogQueryRepository = {
 
     async getBlogs() {
 
-        return Blog.find({})
+        return Blogs.find({})
 
     },
 
 
     async getBlogById(id:string) {
 
-       return Blog.findById(id)
+       return Blogs.findById(id)
 
     },
 
     async isBlogExist(id:string):Promise<boolean> {
-        const result = await Blog.exists({_id:id})
+        const result = await Blogs.exists({_id:id})
 
         return result !== null
     }
