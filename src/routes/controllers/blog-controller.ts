@@ -4,6 +4,7 @@ import {RequestWithBody, RequestWithParams, RequestWithParamsAndBody} from "../.
 import {BlogInputModel} from "../../types/models/blog/blog-input-model";
 import {blogService} from "../../domain/blog-service";
 import {IdModel} from "../../types/models/common/id-model";
+import {BlogViewModel} from "../../types/models/blog/blog-view-model";
 
 
 
@@ -13,9 +14,11 @@ import {IdModel} from "../../types/models/common/id-model";
 
 export const blogController = {
 
+
+
     async getBlogs(req: Request, res: Response) {
 
-        const blogs = await blogQueryRepository.getBlogs()
+        const blogs:BlogViewModel[] = await blogQueryRepository.getBlogs()
 
         return res.json(blogs)
 
@@ -24,7 +27,9 @@ export const blogController = {
 
     async getBlogById(req: RequestWithParams<IdModel>, res: Response) {
 
-        const blogs = await blogQueryRepository.getBlogById(req.params.id)
+        const blogs:BlogViewModel | null = await blogQueryRepository.getBlogById(req.params.id)
+
+        if(!blogs) return res.sendStatus(404)
 
         return res.json(blogs)
 
@@ -32,9 +37,9 @@ export const blogController = {
 
     async postBlog(req: RequestWithBody<BlogInputModel>, res: Response) {
 
-        const blogs = await blogService.createBlog(req.body)
+        const blogs:BlogViewModel = await blogService.createBlog(req.body)
 
-        return res.json(blogs)
+        return res.status(201).json(blogs)
 
     },
 

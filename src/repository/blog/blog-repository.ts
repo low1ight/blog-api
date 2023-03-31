@@ -1,12 +1,14 @@
 import {BlogInputModel} from "../../types/models/blog/blog-input-model";
-import {Blogs} from "../../db/models/blogs";
+import {Blog} from "../../db/models/blog";
+import {blogObjToViewModel} from "../_mappers/toBlogViewModel";
+import {BlogViewModel} from "../../types/models/blog/blog-view-model";
 
 
 export const blogRepository = {
 
 
 
-    async createBlog({name,description,websiteUrl}:BlogInputModel) {
+    async createBlog({name,description,websiteUrl}:BlogInputModel):Promise<BlogViewModel> {
 
         const newBlog:BlogInputModel = {
             name,
@@ -15,23 +17,25 @@ export const blogRepository = {
         }
 
 
-        return Blogs.create(newBlog)
+        const result = await Blog.create(newBlog)
+
+        return blogObjToViewModel(result)
 
 
     },
 
-    async updateBlog(blogId:string, {name,description,websiteUrl}:BlogInputModel) {
+    async updateBlog(blogId:string, {name,description,websiteUrl}:BlogInputModel):Promise<boolean> {
 
-        const result = await Blogs.findByIdAndUpdate(blogId,{name,description,websiteUrl})
+        const result = await Blog.updateOne({_id: blogId},{name,description,websiteUrl})
 
-        return result !== null
+        return result.matchedCount > 0
 
 
     },
 
-    async deleteBlog(blogId:string) {
+    async deleteBlog(blogId:string):Promise<boolean> {
 
-        const result = await Blogs.deleteOne({_id:blogId})
+        const result = await Blog.deleteOne({_id:blogId})
 
         return result.deletedCount === 1
 

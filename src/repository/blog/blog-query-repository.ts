@@ -1,24 +1,34 @@
-import {Blogs} from "../../db/models/blogs";
+import {Blog} from "../../db/models/blog";
+import {BlogDBType} from "../../types/models/blog/blog-DB-type";
+import {blogObjToViewModel, blogsArrToViewModel} from "../_mappers/toBlogViewModel";
+import {BlogViewModel} from "../../types/models/blog/blog-view-model";
 
 
 export const blogQueryRepository = {
 
 
-    async getBlogs() {
+    async getBlogs(): Promise<BlogViewModel[]> {
 
-        return Blogs.find({})
+        const result: BlogDBType[] = await Blog.find({}).lean()
 
-    },
-
-
-    async getBlogById(id:string) {
-
-       return Blogs.findById(id)
+        return blogsArrToViewModel(result)
 
     },
 
-    async isBlogExist(id:string):Promise<boolean> {
-        const result = await Blogs.exists({_id:id})
+
+    async getBlogById(id: string): Promise<BlogViewModel | null> {
+
+        const result: null | BlogDBType = await Blog.findById(id).lean()
+
+        if (!result) return null
+
+        return blogObjToViewModel(result)
+
+    },
+
+    async isBlogExist(id: string): Promise<boolean> {
+
+        const result = await Blog.exists({_id: id})
 
         return result !== null
     }
