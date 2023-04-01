@@ -1,33 +1,46 @@
-import {describe} from "node:test";
 import {runDb} from "../../src/db/db";
 import request from "supertest";
 import {app} from "../../src/app";
 
+
+
+
+
 describe('base posts tests', () => {
 
     let blogId: string
-    let postId: string
     let blogName: string
+    let postId: string
 
     beforeAll(async () => {
+
+        await runDb()
+
+
+        await request(app).delete('/api/testing/all-data').expect(204)
+
 
         const result = await request(app)
             .post('/api/blogs')
             .send({
-                name: "UserName",
-                description: "UserDescription",
+                name: "ForPosts",
+                description: "blogForPostTesting",
                 websiteUrl: "https://www.li11111psum.com/"
             })
 
         expect(result.status).toEqual(201)
 
+
         blogId = result.body.id
         blogName = result.body.name
 
 
-        await runDb()
 
-        await request(app).delete('/api/testing/all-data').expect(204)
+
+
+
+
+
 
 
     })
@@ -55,17 +68,23 @@ describe('base posts tests', () => {
     })
 
     it('shold successful create a post with 201 status', async () => {
+        console.log(blogId)
+
         const result = await request(app).post('/api/posts').send({
             title: "New post",
             shortDescription: "new post desciption",
             content: "new post content",
-            blogId: "64072288a950830f9f23d79a"
+            blogId: blogId
         })
+
+        console.log(result.body.id)
 
         expect(result.status).toEqual(201)
 
 
         postId = result.body.id
+
+
 
         expect(result.body).toEqual(expect.objectContaining({
             id: expect.any(String),
@@ -94,13 +113,15 @@ describe('base posts tests', () => {
 
 
 
-    it('should successful create a post with 201 status', async () => {
+    it('should successful update with 204 status', async () => {
         const result = await request(app).put('/api/posts/' + postId).send({
             title: "Updated post",
             shortDescription: "Updated desciption",
             content: "Updated content",
             blogId: blogId
         })
+
+
 
         expect(result.status).toEqual(204)
 
