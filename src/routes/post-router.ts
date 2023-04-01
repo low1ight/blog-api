@@ -3,6 +3,7 @@ import {postController} from "./controllers/post-controller";
 import {validateId} from "../middlewares/validators/params-id-validator";
 import {postValidator} from "../middlewares/validators/post/post-validation";
 import {errFormatter} from "../middlewares/validators/validationResult";
+import {basicAuth} from "../middlewares/basic-auth";
 
 
 
@@ -16,8 +17,8 @@ postRouter.get('/', postController.getPosts)
 
 postRouter.get('/:id', validateId, postController.getPostById)
 
-postRouter.post('/', postValidator,errFormatter, postController.createPost)
+postRouter.post('/', basicAuth,postValidator,errFormatter, postController.createPost)
 
-postRouter.put('/:id', validateId,postValidator,errFormatter, postController.updatePost)
+postRouter.put('/:id', basicAuth,validateId,postValidator,errFormatter, postController.updatePost)
 
-postRouter.delete('/:id', validateId, postController.deletePost)
+postRouter.delete('/:id', basicAuth,validateId, postController.deletePost)
