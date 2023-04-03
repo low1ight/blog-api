@@ -8,5 +8,7 @@ export type PostDBType = {
     content: string
     blogId: ObjectId
     blogName: string
+    createdAt:Date
+    updatedAt:Date
 
 }

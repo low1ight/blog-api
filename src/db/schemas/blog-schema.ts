@@ -5,4 +5,4 @@ export const blogSchema = new Schema<BlogDBType>({
     name: {type: String, required: true},
     description: {type: String, required: true},
     websiteUrl: {type: String, required: true},
-})
+}, { timestamps: true })

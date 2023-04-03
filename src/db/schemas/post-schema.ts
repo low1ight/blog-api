@@ -8,4 +8,4 @@ export const postSchema = new Schema<PostDBType>({
     content: {type: String, required: true},
     blogId: {type: Types.ObjectId, required: true},
     blogName: {type: String, required: true},
-})
+}, { timestamps: true })
