@@ -22,6 +22,7 @@ describe('base posts tests', () => {
 
         const result = await request(app)
             .post('/api/blogs')
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
             .send({
                 name: "ForPosts",
                 description: "blogForPostTesting",
@@ -33,14 +34,6 @@ describe('base posts tests', () => {
 
         blogId = result.body.id
         blogName = result.body.name
-
-
-
-
-
-
-
-
 
 
     })
@@ -56,7 +49,9 @@ describe('base posts tests', () => {
 
 
     it('should return a 400 if post created for now-existed blog', async () => {
-        const result = await request(app).post('/api/posts').send({
+        const result = await request(app).post('/api/posts')
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .send({
             title: "New post",
             shortDescription: "new post desciption",
             content: "new post content",
@@ -70,7 +65,9 @@ describe('base posts tests', () => {
     it('shold successful create a post with 201 status', async () => {
         console.log(blogId)
 
-        const result = await request(app).post('/api/posts').send({
+        const result = await request(app).post('/api/posts')
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .send({
             title: "New post",
             shortDescription: "new post desciption",
             content: "new post content",
@@ -92,13 +89,16 @@ describe('base posts tests', () => {
             shortDescription: "new post desciption",
             content: "new post content",
             blogId: blogId,
-            blogName: blogName
+            blogName: blogName,
+            createdAt:expect.any(String)
 
         }))
     })
 
     it('should return a 404 status', async () => {
-        const result = await request(app).put('/api/posts/' + 1).send({
+        const result = await request(app).put('/api/posts/' + 1)
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .send({
             title: "Updated post",
             shortDescription: "Updated desciption",
             content: "Updated content",
@@ -114,7 +114,9 @@ describe('base posts tests', () => {
 
 
     it('should successful update with 204 status', async () => {
-        const result = await request(app).put('/api/posts/' + postId).send({
+        const result = await request(app).put('/api/posts/' + postId)
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .send({
             title: "Updated post",
             shortDescription: "Updated desciption",
             content: "Updated content",
@@ -147,12 +149,15 @@ describe('base posts tests', () => {
             shortDescription: "Updated desciption",
             content: "Updated content",
             blogId: blogId,
-            blogName: blogName
+            blogName: blogName,
+            createdAt:expect.any(String)
         }))
     })
 
     it('should return a 404', async () => {
         const result = await request(app).delete('/api/posts/' + 1)
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+
 
         expect(result.status).toEqual(404)
 
@@ -161,6 +166,7 @@ describe('base posts tests', () => {
 
     it('should return a 200 status code and correct post', async () => {
         const result = await request(app).delete('/api/posts/' + postId)
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
 
         expect(result.status).toEqual(204)
 
