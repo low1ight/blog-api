@@ -5,5 +5,5 @@ export const blogSchema = new Schema<BlogDBType>({
     name: {type: String, required: true},
     description: {type: String, required: true},
     websiteUrl: {type: String, required: true},
-    isMembership:{type: Boolean, required: true, default:true},
+    isMembership:{type: Boolean, required: true, default:false},
 }, { timestamps: true })
