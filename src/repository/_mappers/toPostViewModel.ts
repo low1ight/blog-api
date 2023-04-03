@@ -16,7 +16,8 @@ export const postsObjToViewModel = (item:PostDBType):PostViewModel => {
         shortDescription: item.shortDescription,
         content: item.content,
         blogId: item.blogId.toString(),
-        blogName: item.blogName
+        blogName: item.blogName,
+        createdAt:item.createdAt
 
     }
 }
