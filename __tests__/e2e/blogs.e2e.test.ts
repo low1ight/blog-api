@@ -15,7 +15,6 @@ describe('base blog tests', () => {
 
         await request(app).delete('/api/testing/all-data').expect(204)
 
-
     })
 
 
@@ -39,6 +38,7 @@ describe('base blog tests', () => {
     it('should return a 400 status with invalid URL',  async () => {
         const result = await request(app)
             .post('/api/blogs')
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
             .send({
                 name:"new",
                 description:"masddsa",
@@ -48,9 +48,10 @@ describe('base blog tests', () => {
         expect(result.status).toEqual(400)
     })
 
-    it('should return a 200 status code',  async () => {
+    it('should return a 201 status code',  async () => {
         const result = await request(app)
             .post('/api/blogs')
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
             .send({
                 name:"UserName",
                 description:"UserDescription",
@@ -65,13 +66,16 @@ describe('base blog tests', () => {
             id:expect.any(String),
             name:"UserName",
             description:"UserDescription",
-            websiteUrl:"https://www.li11111psum.com/"
+            websiteUrl:"https://www.li11111psum.com/",
+            createdAt:expect.any(String),
+            isMembership:true
         }))
     })
 
 
     it('should response 404 for not existed blog',  async () => {
         const result = await request(app).put('/api/blogs' + INVALID_ID)
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
             .send({
                 name:"UpdatedName",
                 description:"UpdatedUserDescription",
@@ -85,6 +89,7 @@ describe('base blog tests', () => {
 
     it('should successful update blog',  async () => {
         const result = await request(app).put('/api/blogs/' + createdBlogId)
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
             .send({
                 name:"UpdatedName",
                 description:"UpdatedUserDescription",
@@ -113,13 +118,16 @@ describe('base blog tests', () => {
             id:expect.any(String),
             name:"UpdatedName",
             description:"UpdatedUserDescription",
-            websiteUrl:"https://www.lpsum.com/"
+            websiteUrl:"https://www.lpsum.com/",
+            createdAt:expect.any(String),
+            isMembership:true
         }))
     })
 
 
     it('should return a 404 status for not-existed blog',  async () => {
         const result = await request(app).delete('/api/blogs/' + INVALID_ID)
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
 
         expect(result.status).toEqual(404)
 
@@ -127,6 +135,7 @@ describe('base blog tests', () => {
 
     it('should return a 404 status for not-existed blog',  async () => {
         const result = await request(app).delete('/api/blogs/' + createdBlogId)
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
 
         expect(result.status).toEqual(204)
 
