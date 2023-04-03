@@ -32,6 +32,13 @@ export const postQueryRepository = {
         return result !== null
     },
 
+    async getBlogPosts(blogId:string) {
+
+        const result:PostDBType[] = await Post.find({blogId}).lean()
+
+        return postsArrToViewModel(result)
+    }
+
 
 
 }

@@ -1,10 +1,10 @@
 import {Request, Response} from "express";
-import {blogQueryRepository} from "../../repository/blog/blog-query-repository";
-import {RequestWithBody, RequestWithParams, RequestWithParamsAndBody} from "../../types/request-type";
-import {BlogInputModel} from "../../types/models/blog/blog-input-model";
-import {blogService} from "../../domain/blog-service";
-import {IdModel} from "../../types/models/common/id-model";
-import {BlogViewModel} from "../../types/models/blog/blog-view-model";
+import {blogQueryRepository} from "../../../repository/blog/blog-query-repository";
+import {RequestWithBody, RequestWithParams, RequestWithParamsAndBody} from "../../../types/request-type";
+import {BlogInputModel} from "../../../types/models/blog/blog-input-model";
+import {blogService} from "../../../domain/blog-service";
+import {IdModel} from "../../../types/models/common/id-model";
+import {BlogViewModel} from "../../../types/models/blog/blog-view-model";
 
 
 

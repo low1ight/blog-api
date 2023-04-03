@@ -1,7 +1,7 @@
-import {RequestWithParams} from "../../types/request-type";
-import {IdModel} from "../../types/models/common/id-model";
+import {RequestWithParams} from "../../../types/request-type";
+import {IdModel} from "../../../types/models/common/id-model";
 import {Response} from "express";
-import {testingService} from "../../domain/testing-service";
+import {testingService} from "../../../domain/testing-service";
 
 export const testingController = {
 

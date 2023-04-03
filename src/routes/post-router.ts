@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {postController} from "./controllers/post-controller";
+import {postController} from "./controllers/post/post-controller";
 import {validateId} from "../middlewares/validators/params-id-validator";
 import {postValidator} from "../middlewares/validators/post/post-validation";
 import {errFormatter} from "../middlewares/validators/validationResult";

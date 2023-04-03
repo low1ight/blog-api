@@ -1,10 +1,10 @@
 import {Request, Response} from 'express'
-import {postQueryRepository} from "../../repository/post/post-query-repository";
-import {RequestWithBody, RequestWithParams, RequestWithParamsAndBody} from "../../types/request-type";
-import {IdModel} from "../../types/models/common/id-model";
-import {PostViewModel} from "../../types/models/post/post-view-model";
-import {PostInputModel} from "../../types/models/post/post-input-model";
-import {postService} from "../../domain/post-service";
+import {postQueryRepository} from "../../../repository/post/post-query-repository";
+import {RequestWithBody, RequestWithParams, RequestWithParamsAndBody} from "../../../types/request-type";
+import {IdModel} from "../../../types/models/common/id-model";
+import {PostViewModel} from "../../../types/models/post/post-view-model";
+import {PostInputModel} from "../../../types/models/post/post-input-model";
+import {postService} from "../../../domain/post-service";
 
 
 export const postController = {
