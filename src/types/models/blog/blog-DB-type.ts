@@ -7,4 +7,5 @@ export type BlogDBType = {
     websiteUrl:string
     createdAt:Date
     updatedAt:Date
+    isMembership:boolean;
 }

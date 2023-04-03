@@ -13,6 +13,8 @@ export const blogObjToViewModel = (item:BlogDBType):BlogViewModel => {
         id: item._id.toString(),
         name: item.name,
         description: item.description,
-        websiteUrl: item.websiteUrl
+        websiteUrl: item.websiteUrl,
+        createdAt:item.createdAt,
+        isMembership:item.isMembership
     })
 }

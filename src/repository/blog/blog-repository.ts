@@ -10,10 +10,10 @@ export const blogRepository = {
 
     async createBlog({name,description,websiteUrl}:BlogInputModel):Promise<BlogViewModel> {
 
-        const newBlog:BlogInputModel = {
+        const newBlog = {
             name,
             description,
-            websiteUrl
+            websiteUrl,
         }
 
 
