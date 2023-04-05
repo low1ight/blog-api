@@ -1,4 +1,3 @@
-import {Blog} from "../../../db/models/blog";
 import {toViwModelWithPaginator} from "../toViwModelWithPaginator";
 import {calcSkipCount} from "../calcSkipCount";
 import {createSortObject} from "../createSortObject";
@@ -16,9 +15,6 @@ export const getPostsWithQuery = async ({sortBy,sortDirection,pageNumber,pageSiz
 
     const skipCount = calcSkipCount(pageNumber,pageSize)
 
-    const totalElemCount = await Blog.countDocuments(additionalParams).exec();
-
-
 
     const query = Post.find(additionalParams);
 
@@ -32,6 +28,9 @@ export const getPostsWithQuery = async ({sortBy,sortDirection,pageNumber,pageSiz
 
 
 
+
+
+    const totalElemCount = await Post.countDocuments(additionalParams).exec();
 
     const result = await query.exec();
 
