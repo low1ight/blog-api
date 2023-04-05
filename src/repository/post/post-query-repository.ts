@@ -1,5 +1,5 @@
 import {Post} from "../../db/models/post";
-import {postsArrToViewModel, postsObjToViewModel} from "../_mappers/toPostViewModel";
+import {postsObjToViewModel} from "../_mappers/toPostViewModel";
 import {PostDBType} from "../../types/models/post/post-DB-type";
 import {PostViewModel} from "../../types/models/post/post-view-model";
 import {getPostsWithQuery} from "../_common-func/post/getPostsWithQuery";
@@ -12,7 +12,7 @@ export const postQueryRepository = {
 
     async getPosts(query:PostQueryType):Promise<ViewModelWithPaginator<PostViewModel[]>> {
 
-        return await getPostsWithQuery(query,{})
+        return await getPostsWithQuery(query)
 
 
     },
@@ -35,11 +35,10 @@ export const postQueryRepository = {
         return result !== null
     },
 
-    async getBlogPosts(blogId:string) {
+    async getBlogPosts(query:PostQueryType,blogId:string):Promise<ViewModelWithPaginator<PostViewModel[]>> {
 
-        const result:PostDBType[] = await Post.find({blogId}).lean()
+         return await getPostsWithQuery(query,{blogId})
 
-        return postsArrToViewModel(result)
     }
 
 

@@ -9,7 +9,7 @@ import {ViewModelWithPaginator} from "../../../types/models/ViewModelWithPaginat
 import {PostViewModel} from "../../../types/models/post/post-view-model";
 
 
-export const getPostsWithQuery = async ({sortBy,sortDirection,pageNumber,pageSize}:PostQueryType,additionalParams:object):Promise<ViewModelWithPaginator<PostViewModel[]>> => {
+export const getPostsWithQuery = async ({sortBy,sortDirection,pageNumber,pageSize}:PostQueryType,additionalParams:object = {}):Promise<ViewModelWithPaginator<PostViewModel[]>> => {
 
 
     const sortObj = createSortObject(sortBy,sortDirection)
