@@ -1,7 +1,7 @@
 import {ViewModelWithPaginator} from "../../types/models/ViewModelWithPaginator";
 
 
-const calculatePageCount = (pageCount:number,pageSize:number) => Math.round(pageCount / pageSize);
+const calculatePageCount = (pageCount:number,pageSize:number) => Math.ceil(pageCount / pageSize);
 
 
 
