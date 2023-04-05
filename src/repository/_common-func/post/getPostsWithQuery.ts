@@ -16,9 +16,11 @@ export const getPostsWithQuery = async ({sortBy,sortDirection,pageNumber,pageSiz
 
     const skipCount = calcSkipCount(pageNumber,pageSize)
 
+    const totalElemCount = await Blog.countDocuments(additionalParams).exec();
+
+
+
     const query = Post.find(additionalParams);
-
-
 
     query.skip(skipCount)
 
@@ -30,9 +32,9 @@ export const getPostsWithQuery = async ({sortBy,sortDirection,pageNumber,pageSiz
 
 
 
+
     const result = await query.exec();
 
-    const totalElemCount = await Blog.countDocuments(additionalParams).exec();
 
 
     return toViwModelWithPaginator(postsArrToViewModel,result,pageNumber,pageSize,totalElemCount)
