@@ -1,10 +1,19 @@
-import {Request, Response} from "express";
+import {Response} from "express";
 import {blogQueryRepository} from "../../../repository/blog/blog-query-repository";
-import {RequestWithBody, RequestWithParams, RequestWithParamsAndBody} from "../../../types/request-type";
+import {
+    RequestWithBody,
+    RequestWithParams,
+    RequestWithParamsAndBody,
+    RequestWithQuery
+} from "../../../types/request-type";
 import {BlogInputModel} from "../../../types/models/blog/blog-input-model";
 import {blogService} from "../../../domain/blog-service";
 import {IdModel} from "../../../types/models/common/id-model";
 import {BlogViewModel} from "../../../types/models/blog/blog-view-model";
+import {BlogQueryType} from "../../../types/queryType/blog/blog-query-type";
+import {blogQueryMapper} from "../../query-mappers/blog-query-mapper";
+import {BlogInputQueryType} from "../../../types/queryType/blog/blog-input-query-type";
+import {ViewModelWithPaginator} from "../../../types/models/ViewModelWithPaginator";
 
 
 
@@ -16,9 +25,11 @@ export const blogController = {
 
 
 
-    async getBlogs(req: Request, res: Response) {
+    async getBlogs(req: RequestWithQuery<BlogInputQueryType>, res: Response) {
 
-        const blogs:BlogViewModel[] = await blogQueryRepository.getBlogs()
+        const query:BlogQueryType = blogQueryMapper(req.query)
+
+        const blogs:ViewModelWithPaginator<BlogViewModel[]> = await blogQueryRepository.getBlogs(query)
 
         return res.json(blogs)
 

@@ -2,16 +2,19 @@ import {Post} from "../../db/models/post";
 import {postsArrToViewModel, postsObjToViewModel} from "../_mappers/toPostViewModel";
 import {PostDBType} from "../../types/models/post/post-DB-type";
 import {PostViewModel} from "../../types/models/post/post-view-model";
+import {getPostsWithQuery} from "../_common-func/post/getPostsWithQuery";
+import {ViewModelWithPaginator} from "../../types/models/ViewModelWithPaginator";
+import {PostQueryType} from "../../types/queryType/post/post-query-type";
 
 
 export const postQueryRepository = {
 
 
-    async getPosts():Promise<PostViewModel[]> {
+    async getPosts(query:PostQueryType):Promise<ViewModelWithPaginator<PostViewModel[]>> {
 
-        const result:PostDBType[] = await Post.find().lean()
+        return await getPostsWithQuery(query,{})
 
-        return postsArrToViewModel(result)
+
     },
 
 

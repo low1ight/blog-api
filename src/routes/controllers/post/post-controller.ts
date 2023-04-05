@@ -1,19 +1,30 @@
-import {Request, Response} from 'express'
+import {Response} from 'express'
 import {postQueryRepository} from "../../../repository/post/post-query-repository";
-import {RequestWithBody, RequestWithParams, RequestWithParamsAndBody} from "../../../types/request-type";
+import {
+    RequestWithBody,
+    RequestWithParams,
+    RequestWithParamsAndBody,
+    RequestWithQuery
+} from "../../../types/request-type";
 import {IdModel} from "../../../types/models/common/id-model";
 import {PostViewModel} from "../../../types/models/post/post-view-model";
 import {PostInputModel} from "../../../types/models/post/post-input-model";
 import {postService} from "../../../domain/post-service";
+import {blogQueryMapper} from "../../query-mappers/post-query-mapper";
+import {PostInputQueryType} from "../../../types/queryType/post/post-input-query-type";
+import {PostQueryType} from "../../../types/queryType/post/post-query-type";
+import {ViewModelWithPaginator} from "../../../types/models/ViewModelWithPaginator";
 
 
 export const postController = {
 
 
 
-    async getPosts(req: Request, res: Response) {
+    async getPosts(req: RequestWithQuery<PostInputQueryType>, res: Response) {
 
-        const posts:PostViewModel[] = await postQueryRepository.getPosts()
+        const query:PostQueryType = blogQueryMapper(req.query)
+
+        const posts:ViewModelWithPaginator<PostViewModel[]> = await postQueryRepository.getPosts(query)
 
         return res.json(posts)
 

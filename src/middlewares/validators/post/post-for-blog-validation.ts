@@ -1,6 +1,5 @@
-import {body, param} from "express-validator";
+import {body} from "express-validator";
 import {errMessages} from "../../../utils/errors/errMessages";
-import {isBlogExist} from "../_custom/isBlogExist";
 
 
 const allFields = ["title","shortDescription","content"]
