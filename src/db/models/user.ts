@@ -1,6 +1,6 @@
 import {model} from "mongoose";
-import {PostDBType} from "../../types/models/post/post-DB-type";
 import {userSchema} from "../schemas/user-schema";
+import {UserDBType} from "../../types/models/user/user-DB-type";
 
 
-export const User = model<PostDBType>('User', userSchema)
+export const User = model<UserDBType>('User', userSchema)
