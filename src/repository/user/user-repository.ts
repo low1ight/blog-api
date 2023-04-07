@@ -28,14 +28,33 @@ export const userRepository = {
 
         const result = await User.exists({_id:userId})
 
-        console.log(result)
-
         return result !== null
 
 
+    },
 
 
-    }
+    async getUserByLoginOrEmail(loginOrEmail:string):Promise<UserDBType | null> {
+
+        return User.findOne({ $or: [{ login: loginOrEmail }, { email: loginOrEmail }] })
+
+    },
+
+    async isEmailExist(email:string):Promise<boolean> {
+
+        const result = await User.exists({email})
+
+        return result !== null
+
+    },
+
+    async isLoginExist(login:string):Promise<boolean> {
+
+        const result = await User.exists({login})
+
+        return result !== null
+
+    },
 
 
 }
