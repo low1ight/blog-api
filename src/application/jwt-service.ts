@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import {settings} from "../../settings";
+import {settings} from "../settings";
 import {AccessTokenPayloadData} from "../types/models/jwt/AccessTokenPayloadData";
 
 export const jwtService = {
