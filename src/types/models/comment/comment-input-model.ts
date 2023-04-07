@@ -1,5 +1,5 @@
 
 
-export type UserInputModel = {
+export type CommentInputModel = {
     content:string
 }
