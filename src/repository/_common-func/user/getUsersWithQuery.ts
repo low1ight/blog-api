@@ -6,6 +6,7 @@ import {User} from "../../../db/models/user";
 import {UserQueryType} from "../../../types/queryType/user/user-query-type";
 import {UserViewModel} from "../../../types/models/user/user-view-model";
 import {usersArrToViewModel} from "../../_mappers/toUserViewModel";
+import {createFindBySeveralFieldObj} from "../createFindBySeveralFieldObj";
 
 
 export const getUsersWithQuery = async ({searchLoginTerm,searchEmailTerm,sortBy,sortDirection,pageNumber,pageSize}:UserQueryType,additionalParams:object = {}):Promise<ViewModelWithPaginator<UserViewModel[]>> => {
@@ -15,8 +16,10 @@ export const getUsersWithQuery = async ({searchLoginTerm,searchEmailTerm,sortBy,
 
     const skipCount = calcSkipCount(pageNumber,pageSize)
 
+    const findFields = createFindBySeveralFieldObj({login:searchLoginTerm,email:searchEmailTerm},"$or")
 
-    const query = User.find(additionalParams);
+
+    const query = User.find(findFields,additionalParams);
 
     query.skip(skipCount)
 
@@ -28,7 +31,7 @@ export const getUsersWithQuery = async ({searchLoginTerm,searchEmailTerm,sortBy,
 
 
 
-    const totalElemCount = await User.countDocuments(additionalParams).exec();
+    const totalElemCount = await User.countDocuments(findFields,additionalParams).exec();
 
     const result = await query.exec();
 
