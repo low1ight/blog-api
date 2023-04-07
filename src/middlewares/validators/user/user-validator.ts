@@ -17,7 +17,7 @@ export const userValidator = [
 
     body(login)
         .isLength({min:3}).withMessage(errMessages.tooShort(3))
-        .isLength({max:15}).withMessage(errMessages.tooLong(15))
+        .isLength({max:10}).withMessage(errMessages.tooLong(10))
         .matches("^[a-zA-Z0-9_-]*$").withMessage(errMessages.invalidFormat('login'))
         .custom(isLoginExist).withMessage(errMessages.loginAlreadyTaken()),
 
