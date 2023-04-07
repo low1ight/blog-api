@@ -10,6 +10,7 @@ export const commentatorSchema = new Schema<CommentatorInfo>({
 
 export const commentSchema = new Schema<CommentDBType>({
     content: {type: String, required: true},
+    postId: {type: ObjectId, required: true},
     commentatorInfo: {type: commentatorSchema, required: true},
 
 }, { timestamps: true })

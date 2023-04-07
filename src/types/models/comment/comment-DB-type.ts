@@ -2,7 +2,8 @@ import {ObjectId} from "mongoose";
 
 
 export type CommentDBType = {
-    _id: ObjectId,
+    _id: ObjectId
+    postId:ObjectId
     content:string
     commentatorInfo:CommentatorInfo
     createdAt:Date
