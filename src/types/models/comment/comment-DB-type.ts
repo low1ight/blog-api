@@ -1,7 +1,7 @@
 import {ObjectId} from "mongoose";
 
 
-export type commentDBType = {
+export type CommentDBType = {
     _id: ObjectId,
     content:string
     commentatorInfo:CommentatorInfo
