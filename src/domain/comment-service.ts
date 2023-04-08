@@ -30,6 +30,22 @@ export const commentService = {
 
 
 
+    },
+
+
+    async updateComment(dataForUpdating:CommentInputModel,commentId:string) {
+
+
+        return await commentRepository.updateComment(dataForUpdating,commentId)
+
+    },
+
+
+    async deleteComment(commentId:string):Promise<boolean> {
+
+
+        return await commentRepository.deleteComment(commentId)
+
     }
 
 
