@@ -7,16 +7,23 @@ import {CommentInputQueryType} from "../../../types/queryType/comment/comment-in
 import {CommentInputModel} from "../../../types/models/comment/comment-input-model";
 import {CommentViewModel} from "../../../types/models/comment/comment-view-model";
 import {commentService} from "../../../domain/comment-service";
+import {postQueryRepository} from "../../../repository/post/post-query-repository";
 
 export const postCommentsController = {
 
     async getPostComments(req:RequestWithParamsAndQuery<IdModel,CommentInputQueryType>, res:Response) {
 
+        const isPostExist = await postQueryRepository.isPostExist(req.params.id)
+
+        if(!isPostExist) return res.sendStatus(404)
+
+
+
         const query = commentQueryMapper(req.query)
 
        const comments = await commentQueryRepository.getPostComments(query,req.params.id)
 
-        res.json(comments)
+        return res.json(comments)
 
 
     },
