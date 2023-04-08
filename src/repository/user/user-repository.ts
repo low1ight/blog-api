@@ -7,6 +7,15 @@ import {UserViewModel} from "../../types/models/user/user-view-model";
 
 export const userRepository = {
 
+
+    async getUserById(id:string):Promise<UserDBType | null> {
+        const result = await User.findOne({_id:id})
+
+        if(!result) return null
+
+        return result
+    },
+
     async createUser(userData: UserInputModel): Promise<UserViewModel> {
 
         const newUser: UserDBType = await User.create(userData)
@@ -55,6 +64,7 @@ export const userRepository = {
         return result !== null
 
     },
+
 
 
 }

@@ -8,11 +8,11 @@ export const authController = {
     
     async login(req:RequestWithBody<LoginInputModel>,res:Response) {
 
-        const loginResult:boolean = await authService.login(req.body)
+        const loginResult:null | string = await authService.login(req.body)
 
         if(!loginResult) return res.sendStatus(401)
 
-        return res.sendStatus(204)
+        return res.status(200).json({accessToken:loginResult})
 
     }
     

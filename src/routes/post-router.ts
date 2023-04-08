@@ -5,6 +5,7 @@ import {postValidator} from "../middlewares/validators/post/post-validation";
 import {errFormatter} from "../middlewares/validators/validationResult";
 import {basicAuth} from "../middlewares/basic-auth";
 import {postCommentsController} from "./controllers/post/post-comments-controller";
+import {bearerAuth} from "../middlewares/bearer-auth";
 
 
 
@@ -27,3 +28,5 @@ postRouter.delete('/:id', basicAuth,validateId, postController.deletePost)
 
 
 postRouter.get('/:id/comments', postCommentsController.getPostComments)
+
+postRouter.post('/:id/comments', bearerAuth, postCommentsController.createComment)

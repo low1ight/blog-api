@@ -12,13 +12,18 @@ export const bearerAuth = async (req:Request,res:Response,next:NextFunction) => 
     //get auth and token
     let [authType,token] = auth.split(' ')
 
-    if(authType === "Bearer") res.sendStatus(401)
+    if(authType !== "Bearer") res.sendStatus(401)
 
 
     //verify jwtToken and get userId
-    const userPayloadData = await jwtService.getUserIdFromAccessToken(token)
+    let userPayloadData
+    try {
+        userPayloadData = await jwtService.getUserIdFromAccessToken(token)
+    } catch (e:any) {
+        return res.status(401).json(e.message)
+    }
 
-    if(!userPayloadData) return res.sendStatus(401)
+
 
     req.authUserData = userPayloadData
 

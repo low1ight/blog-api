@@ -28,7 +28,6 @@ export const getCommentsWithQuery = async ({sortBy,sortDirection,pageNumber,page
 
 
 
-
     const totalElemCount = await Comment.countDocuments(additionalParams).exec();
 
     const result = await query.exec();
