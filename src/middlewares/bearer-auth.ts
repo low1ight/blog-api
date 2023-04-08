@@ -12,7 +12,7 @@ export const bearerAuth = async (req:Request,res:Response,next:NextFunction) => 
     //get auth and token
     let [authType,token] = auth.split(' ')
 
-    if(authType !== "Bearer") res.sendStatus(401)
+    if(authType !== "Bearer") return res.sendStatus(401)
 
 
     //verify jwtToken and get userId
