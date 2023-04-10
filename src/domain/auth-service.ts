@@ -10,11 +10,18 @@ import {createCustomResponse, CustomResponse} from "../utils/errors/custromError
 import {EmailConfirmationInputModel} from "../types/models/auth/emailConfirmation-input-model";
 import { v4 as uuidv4 } from 'uuid';
 import {ResendCodeInputModel} from "../types/models/auth/resendCode-input-model";
+import {TokensType} from "../types/models/jwt/TokensType";
+import {deviceService} from "./device-service";
+import {DeviceType} from "../types/models/device/DeviceType";
+import {RefreshTokenPayloadData} from "../types/models/jwt/RefreshTokenPayloadData";
+import jwt from "jsonwebtoken";
+import {settings} from "../settings";
+import {deviceRepository} from "../repository/device/device-repository";
 
 export const authService = {
 
 
-    async login({loginOrEmail,password}:LoginInputModel):Promise<null | string> {
+    async login({loginOrEmail,password}:LoginInputModel,title:string,ip:string):Promise<null | TokensType> {
 
 
         //get login user data
@@ -38,12 +45,84 @@ export const authService = {
 
 
 
-        //create new jwt token
+        //create new device
 
-        return await jwtService.createNewTokens(user._id.toString())
+
+
+        const newDevice:DeviceType = await deviceService.createNewDevice(user._id,title,ip)
+
+
+        //create and return jwt tokens
+
+        return await jwtService.createNewTokens(user._id.toString(),newDevice.sessionId,newDevice._id.toString())
+
+    },
+
+
+    async refreshRefreshToken(refreshToken:string) {
+
+            const jstVerifyResult:CustomResponse<RefreshTokenPayloadData> = await this.verifyRefreshToken(refreshToken)
+
+           if(!jstVerifyResult.successful) return jstVerifyResult
+
+           const jwtPayload:RefreshTokenPayloadData = jstVerifyResult.content
+
+            //create nes session id and update device
+            const newSessionId:string | null = await deviceService.refreshDeviceSessionId(jwtPayload.deviceId)
+
+            if(!newSessionId) return createCustomResponse(false,"error updating session id")
+
+            //return new jwt
+            const tokens:TokensType =  await jwtService.createNewTokens(jwtPayload.userId,newSessionId,jwtPayload.deviceId)
+
+            return createCustomResponse(true,tokens)
 
 
     },
+
+
+    async logout(refreshToken:string) {
+
+        const jstVerifyResult:CustomResponse<RefreshTokenPayloadData> = await this.verifyRefreshToken(refreshToken)
+
+        if(!jstVerifyResult.successful) return jstVerifyResult
+
+        const jwtPayload:RefreshTokenPayloadData = jstVerifyResult.content
+
+        const isLogout:boolean = await deviceRepository.deleteDevice(jwtPayload.deviceId)
+
+        if(!isLogout) createCustomResponse(true,"failed logout")
+
+        return createCustomResponse(true,"successful logout")
+
+    },
+
+
+    async verifyRefreshToken(refreshToken:string):Promise<CustomResponse<RefreshTokenPayloadData>> {
+
+        try {
+
+            //verify refresh token and get payload data
+            let jwtPayload:RefreshTokenPayloadData = await jwt.verify(refreshToken,settings.JWT_SECRET) as RefreshTokenPayloadData
+
+            //get current sessionId for token device
+            const currentDeviceSessionId:string | null = await deviceRepository.getCurrentDeviceSessionId(jwtPayload.deviceId)
+
+
+            //validate sessionId
+            if(!currentDeviceSessionId) return createCustomResponse(false,"find device err")
+
+            if(jwtPayload.sessionId !== currentDeviceSessionId) return createCustomResponse(false,"refresh token expired")
+
+            return createCustomResponse(true,jwtPayload)
+
+        } catch(e:any) {
+
+            return createCustomResponse(false,e.message)
+
+        }
+    },
+
 
 
 
@@ -93,7 +172,7 @@ export const authService = {
 
     },
 
-    async confirmUserEmail({code}:EmailConfirmationInputModel):Promise<CustomResponse> {
+    async confirmUserEmail({code}:EmailConfirmationInputModel):Promise<CustomResponse<string>> {
 
         const user = await userRepository.getUserByEmailConfirmationCode(code)
 

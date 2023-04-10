@@ -5,9 +5,7 @@ import {postRouter} from "./routes/post-router";
 import {userRouter} from "./routes/user-router";
 import {authRouter} from "./routes/auth-router";
 import {commentRouter} from "./routes/comment-router";
-
-
-
+import cookieParser from "cookie-parser";
 
 export const app = express()
 
@@ -15,6 +13,7 @@ export const app = express()
 
 //body parser
 app.use(express.json())
+app.use(cookieParser())
 
 
 app.get('/', (req, res) => {
@@ -24,6 +23,8 @@ app.get('/', (req, res) => {
 
 const baseUrl = '/api/'
 
+
+app.set('trust proxy', true)
 app.use(baseUrl + 'blogs', blogRouter)
 app.use(baseUrl + 'posts', postRouter)
 app.use(baseUrl + 'users', userRouter)

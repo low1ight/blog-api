@@ -13,9 +13,13 @@ export const authRouter = Router()
 
 authRouter.post('/login',authController.login)
 
+authRouter.post('/logout', authController.logout)
+
 authRouter.post('/registration',userValidator,errFormatter, authController.registration)
 
 authRouter.post('/registration-confirmation',registrationConfirmationValidator,errFormatter, authController.confirmEmail)
+
+authRouter.post('/refresh-token', authController.refreshToken)
 
 authRouter.post('/registration-email-resending',registrationResendingCodeValidator,errFormatter, authController.resendEmailCode)
 

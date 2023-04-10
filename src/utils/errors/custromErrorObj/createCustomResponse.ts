@@ -1,6 +1,6 @@
 
 
-export const createCustomResponse = (successful:boolean,content:string):CustomResponse => {
+export const createCustomResponse = (successful:boolean,content:any):CustomResponse<any> => {
     return {
         successful,
         content
@@ -8,7 +8,7 @@ export const createCustomResponse = (successful:boolean,content:string):CustomRe
 }
 
 
-export type CustomResponse = {
+export type CustomResponse<T> = {
     successful:boolean
-    content:string | object
+    content:T
 }

@@ -9,6 +9,7 @@ import {CustomResponse} from "../../../utils/errors/custromErrorObj/createCustom
 import {ResendCodeInputModel} from "../../../types/models/auth/resendCode-input-model";
 import {errorObj} from "../../../utils/errors/errorObj";
 import {errorBody} from "../../../utils/errors/errorBody";
+import {TokensType} from "../../../types/models/jwt/TokensType";
 
 
 export const authController = {
@@ -16,14 +17,58 @@ export const authController = {
     
     async login(req:RequestWithBody<LoginInputModel>,res:Response) {
 
-        const loginResult:null | string = await authService.login(req.body)
+        const clientDevice:any = req.headers['user-agent']
+
+        const clientIp:any = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+
+
+        const loginResult:null | TokensType = await authService.login(req.body,clientDevice,clientIp)
 
         if(!loginResult) return res.sendStatus(401)
 
-        return res.status(200).json({accessToken:loginResult})
+        return res.status(200)
+            .cookie('refreshToken',loginResult.refreshToken,)
+            .json({accessToken:loginResult.accessToken})
 
     },
 
+
+    async logout(req:Request,res:Response) {
+
+        const refreshToken = req.cookies.refreshToken
+
+        if(!refreshToken) return res.sendStatus(401)
+
+        const isLogOut:CustomResponse<string> = await authService.logout(refreshToken)
+
+        if(!isLogOut.successful) return res.sendStatus(401)
+
+        return res.sendStatus(204)
+
+    },
+
+
+
+
+    async refreshToken(req:Request,res:Response) {
+
+        const refreshToken = req.cookies.refreshToken
+
+        if(!refreshToken) return res.sendStatus(401)
+
+
+
+        const result:CustomResponse<TokensType> = await authService.refreshRefreshToken(refreshToken)
+
+        if(!result.successful) return res.sendStatus(401)
+
+        return res.status(200)
+            .cookie('refreshToken',result.content.refreshToken)
+            .json({accessToken:result.content.accessToken})
+
+
+    },
+//{httpOnly:true,secure:true}
 
     async registration(req:RequestWithBody<UserInputModel>,res:Response) {
 
@@ -37,7 +82,7 @@ export const authController = {
 
     async resendEmailCode(req:RequestWithBody<ResendCodeInputModel>,res:Response) {
 
-        const result:CustomResponse = await authService.resendConfirmationCode(req.body)
+        const result:CustomResponse<string> = await authService.resendConfirmationCode(req.body)
 
         if(!result.successful) {
 
@@ -53,7 +98,7 @@ export const authController = {
 
     async confirmEmail(req:RequestWithBody<EmailConfirmationInputModel>,res:Response) {
 
-        const result:boolean | CustomResponse = await authService.confirmUserEmail(req.body)
+        const result:boolean | CustomResponse<string> = await authService.confirmUserEmail(req.body)
 
         if(!result.successful) {
 
