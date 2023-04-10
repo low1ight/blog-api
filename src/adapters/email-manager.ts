@@ -14,7 +14,7 @@ export const emailManager = {
             }
         });
 
-        const confirmationLink = `https://somesite.com/confirm-email?${confirmationCode}`
+        const confirmationLink = `https://somesite.com/confirm-email?code=${confirmationCode}`
 
         const mailOptions = {
             from: 'Blog-API',
