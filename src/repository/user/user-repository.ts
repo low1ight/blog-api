@@ -93,6 +93,22 @@ export const userRepository = {
 
         return result.matchedCount === 1
 
+    },
+
+    async setNewEmailConfirmationCode(email:string,code:string) {
+        const result = await User.updateOne({"userData.email":email},{"userConfirmation.confirmationCode":code})
+
+        return result.matchedCount === 1
+    },
+
+    async isEmailConfirmed(email:string):Promise<boolean> {
+
+        const user = await User.findOne({"userData.email":email})
+
+        if(!user) return false
+
+       return user.userConfirmation.isConfirmed
+
     }
 
 

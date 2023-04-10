@@ -6,6 +6,7 @@ import {userQueryRepository} from "../../../repository/user/user-query-repositor
 import {UserInputModel} from "../../../types/models/user/user-input-model";
 import {EmailConfirmationInputModel} from "../../../types/models/auth/emailConfirmation-input-model";
 import {CustomResponse} from "../../../utils/errors/custromErrorObj/createCustomResponse";
+import {ResendCodeInputModel} from "../../../types/models/auth/resendCode-input-model";
 
 
 export const authController = {
@@ -29,6 +30,16 @@ export const authController = {
         if(!registrationResult) return res.sendStatus(500)
 
         res.sendStatus(204)
+
+    },
+
+    async resendEmailCode(req:RequestWithBody<ResendCodeInputModel>,res:Response) {
+
+        const result:CustomResponse = await authService.resendConfirmationCode(req.body)
+
+        if(!result.successful) return res.status(400).json(result.content)
+
+        return res.sendStatus(204)
 
     },
     

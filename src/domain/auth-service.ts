@@ -8,7 +8,8 @@ import {userService} from "./user-service";
 import {emailManager} from "../adapters/email-manager";
 import {createCustomResponse, CustomResponse} from "../utils/errors/custromErrorObj/createCustomResponse";
 import {EmailConfirmationInputModel} from "../types/models/auth/emailConfirmation-input-model";
-
+import { v4 as uuidv4 } from 'uuid';
+import {ResendCodeInputModel} from "../types/models/auth/resendCode-input-model";
 
 export const authService = {
 
@@ -60,6 +61,35 @@ export const authService = {
 
            return false
        }
+
+    },
+
+
+
+    async resendConfirmationCode({email}:ResendCodeInputModel) {
+
+        const isEmailConfirmed = await userRepository.isEmailConfirmed(email)
+
+        if(isEmailConfirmed) return createCustomResponse(false,"email already confirmed")
+
+
+
+
+        try{
+            const newConfirmationCode = uuidv4()
+
+            await userRepository.setNewEmailConfirmationCode(email,newConfirmationCode)
+
+            await emailManager.sendEmail(email,newConfirmationCode)
+
+            return createCustomResponse(true,'new code successful sent')
+
+        } catch (e:any) {
+
+            return createCustomResponse(false,e.message)
+
+        }
+
 
     },
 
