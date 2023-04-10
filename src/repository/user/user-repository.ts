@@ -1,7 +1,7 @@
 import {User} from "../../db/models/user";
 import {userObjToViewModel} from "../_mappers/toUserViewModel";
 import {UserInputModel} from "../../types/models/user/user-input-model";
-import {UserDBType} from "../../types/models/user/user-DB-type";
+import {UserConfirmation, UserDBType} from "../../types/models/user/user-DB-type";
 import {UserViewModel} from "../../types/models/user/user-view-model";
 
 
@@ -16,13 +16,29 @@ export const userRepository = {
         return result
     },
 
-    async createUser(userData: UserInputModel): Promise<UserViewModel> {
+    async createUser(userData: UserInputModel,userConfirmation:UserConfirmation): Promise<UserViewModel> {
 
-        const newUser: UserDBType = await User.create(userData)
+        const newUser: UserDBType = await User.create({
+            userData,
+            userConfirmation
+        })
 
         return userObjToViewModel(newUser)
 
     },
+
+
+    async registerUser(userData: UserInputModel,userConfirmation:UserConfirmation): Promise<UserDBType> {
+
+        return await User.create({
+            userData,
+            userConfirmation
+        })
+
+
+
+    },
+
 
 
     async deleteUser(userId: string): Promise<boolean> {
@@ -45,13 +61,13 @@ export const userRepository = {
 
     async getUserByLoginOrEmail(loginOrEmail:string):Promise<UserDBType | null> {
 
-        return User.findOne({ $or: [{ login: loginOrEmail }, { email: loginOrEmail }] })
+        return User.findOne({ $or: [{ "userData.login": loginOrEmail }, { "userData.email": loginOrEmail }] })
 
     },
 
     async isEmailExist(email:string):Promise<boolean> {
 
-        const result = await User.exists({email})
+        const result = await User.exists({"userData.email":email})
 
         return result !== null
 
@@ -59,11 +75,25 @@ export const userRepository = {
 
     async isLoginExist(login:string):Promise<boolean> {
 
-        const result = await User.exists({login})
+        const result = await User.exists({"userData.login":login})
 
         return result !== null
 
     },
+
+    async getUserByEmailConfirmationCode(code:string):Promise<UserDBType | null> {
+
+        return User.findOne({"userConfirmation.confirmationCode":code})
+
+    },
+
+    async confirmUserEmail(code:string) {
+
+        const result = await User.updateOne({"userConfirmation.confirmationCode":code},{"userConfirmation.isConfirmed":true})
+
+        return result.matchedCount === 1
+
+    }
 
 
 

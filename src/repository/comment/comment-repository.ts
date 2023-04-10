@@ -19,7 +19,7 @@ export const commentRepository = {
             postId:new Types.ObjectId(postId),
             commentatorInfo: {
                 userId:user._id,
-                userLogin: user.login
+                userLogin: user.userData.login
             }
         })
 

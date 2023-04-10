@@ -11,9 +11,9 @@ export const usersArrToViewModel = (arr:UserDBType[]):UserViewModel[] => {
 export const userObjToViewModel = (item:UserDBType):UserViewModel => {
     return ({
         id: item._id.toString(),
-        login: item.login,
-        email: item.email,
-        createdAt:item.createdAt,
+        login: item.userData.login,
+        email: item.userData.email,
+        createdAt:item.userData.createdAt,
 
     })
 }

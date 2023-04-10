@@ -5,8 +5,8 @@ export const userToAuthMeModel = (user:UserDBType) => {
 
     return {
         userId:user._id.toString(),
-        login:user.login,
-        email:user.email,
+        login:user.userData.login,
+        email:user.userData.email,
 
     }
 
