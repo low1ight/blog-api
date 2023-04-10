@@ -60,7 +60,7 @@ export const userService = {
             isConfirmed:emailConfirmationStatus,
             expirationDate:add(new Date(),{
                 hours:1,
-                minutes:2
+                minutes:1
             })
         }
 

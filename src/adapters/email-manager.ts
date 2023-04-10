@@ -23,7 +23,7 @@ export const emailManager = {
             html:
                 ` <h1>Thank for your registration</h1>
                     <p>To finish registration please follow the link below:
-                    <a href={confirmationLink}>complete registration</a>
+                    <a href=${confirmationLink}>complete registration</a>
                     </p>`
         };
 
