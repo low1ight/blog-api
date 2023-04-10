@@ -97,11 +97,9 @@ export const authService = {
 
         const user = await userRepository.getUserByEmailConfirmationCode(code)
 
-        if(!user) return createCustomResponse(false,"user don't exist ")
+        if(!user) return createCustomResponse(false,"wrong confirmation code")
 
         if(user.userConfirmation.isConfirmed) return createCustomResponse(false,'user has already confirmed')
-
-        if(user.userConfirmation.confirmationCode !== code) return createCustomResponse(false,'activation is wrong')
 
         if(user.userConfirmation.expirationDate < new Date()) return createCustomResponse(false,'confirmation code expired')
 

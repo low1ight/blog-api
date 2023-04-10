@@ -7,6 +7,8 @@ import {UserInputModel} from "../../../types/models/user/user-input-model";
 import {EmailConfirmationInputModel} from "../../../types/models/auth/emailConfirmation-input-model";
 import {CustomResponse} from "../../../utils/errors/custromErrorObj/createCustomResponse";
 import {ResendCodeInputModel} from "../../../types/models/auth/resendCode-input-model";
+import {errorObj} from "../../../utils/errors/errorObj";
+import {errorBody} from "../../../utils/errors/errorBody";
 
 
 export const authController = {
@@ -37,7 +39,12 @@ export const authController = {
 
         const result:CustomResponse = await authService.resendConfirmationCode(req.body)
 
-        if(!result.successful) return res.status(400).json(result.content)
+        if(!result.successful) {
+
+            const err = errorObj(result.content as string,"email")
+
+            return res.status(400).json(errorBody(err))
+        }
 
         return res.sendStatus(204)
 
@@ -48,7 +55,12 @@ export const authController = {
 
         const result:boolean | CustomResponse = await authService.confirmUserEmail(req.body)
 
-        if(!result.successful) return res.status(400).json(result.content)
+        if(!result.successful) {
+
+            const err = errorObj(result.content as string,"code")
+
+            return res.status(400).json(errorBody(err))
+        }
 
         return res.sendStatus(204)
 
