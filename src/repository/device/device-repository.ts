@@ -46,6 +46,18 @@ export const deviceRepository = {
 
     },
 
+    async getDeviceById(deviceId:string) {
+        return Device.findOne({_id:deviceId})
+    },
+
+    async deleteAllAnotherDevices(currentDeviceId:string,userId:string) {
+
+        const result = await Device.deleteMany({'_id': {$ne : currentDeviceId}},{userId})
+
+        return result.deletedCount >= 0
+
+
+    },
 
 
 

@@ -45,7 +45,7 @@ export const authService = {
 
 
 
-        //create new device
+        //create new security
 
 
 
@@ -67,15 +67,15 @@ export const authService = {
 
            const jwtPayload:RefreshTokenPayloadData = jstVerifyResult.content
 
-            //create nes session id and update device
+            //create nes session id and update security
             const newSessionId:string | null = await deviceService.refreshDeviceSessionId(jwtPayload.deviceId)
 
-            if(!newSessionId) return createCustomResponse(false,"error updating session id")
+            if(!newSessionId) return createCustomResponse(false,500,"error updating session id")
 
             //return new jwt
             const tokens:TokensType =  await jwtService.createNewTokens(jwtPayload.userId,newSessionId,jwtPayload.deviceId)
 
-            return createCustomResponse(true,tokens)
+            return createCustomResponse(true,200,tokens)
 
 
     },
@@ -91,9 +91,9 @@ export const authService = {
 
         const isLogout:boolean = await deviceRepository.deleteDevice(jwtPayload.deviceId)
 
-        if(!isLogout) createCustomResponse(true,"failed logout")
+        if(!isLogout) createCustomResponse(true,500,"failed logout")
 
-        return createCustomResponse(true,"successful logout")
+        return createCustomResponse(true,204,"successful logout")
 
     },
 
@@ -105,20 +105,20 @@ export const authService = {
             //verify refresh token and get payload data
             let jwtPayload:RefreshTokenPayloadData = await jwt.verify(refreshToken,settings.JWT_SECRET) as RefreshTokenPayloadData
 
-            //get current sessionId for token device
+            //get current sessionId for token security
             const currentDeviceSessionId:string | null = await deviceRepository.getCurrentDeviceSessionId(jwtPayload.deviceId)
 
 
             //validate sessionId
-            if(!currentDeviceSessionId) return createCustomResponse(false,"find device err")
+            if(!currentDeviceSessionId) return createCustomResponse(false,401,"find security err")
 
-            if(jwtPayload.sessionId !== currentDeviceSessionId) return createCustomResponse(false,"refresh token expired")
+            if(jwtPayload.sessionId !== currentDeviceSessionId) return createCustomResponse(false,401,"refresh token expired")
 
-            return createCustomResponse(true,jwtPayload)
+            return createCustomResponse(true,200,jwtPayload)
 
         } catch(e:any) {
 
-            return createCustomResponse(false,e.message)
+            return createCustomResponse(false,500,e.message)
 
         }
     },
@@ -149,7 +149,7 @@ export const authService = {
 
         const isEmailConfirmed = await userRepository.isEmailConfirmed(email)
 
-        if(isEmailConfirmed) return createCustomResponse(false,"email already confirmed")
+        if(isEmailConfirmed) return createCustomResponse(false,401,"email already confirmed")
 
 
 
@@ -161,11 +161,11 @@ export const authService = {
 
             await emailManager.sendEmail(email,newConfirmationCode)
 
-            return createCustomResponse(true,'new code successful sent')
+            return createCustomResponse(true,204,'new code successful sent')
 
         } catch (e:any) {
 
-            return createCustomResponse(false,e.message)
+            return createCustomResponse(false,500,e.message)
 
         }
 
@@ -176,18 +176,18 @@ export const authService = {
 
         const user = await userRepository.getUserByEmailConfirmationCode(code)
 
-        if(!user) return createCustomResponse(false,"wrong confirmation code")
+        if(!user) return createCustomResponse(false,401,"wrong confirmation code")
 
-        if(user.userConfirmation.isConfirmed) return createCustomResponse(false,'user has already confirmed')
+        if(user.userConfirmation.isConfirmed) return createCustomResponse(false,401,'user has already confirmed')
 
-        if(user.userConfirmation.expirationDate < new Date()) return createCustomResponse(false,'confirmation code expired')
+        if(user.userConfirmation.expirationDate < new Date()) return createCustomResponse(false,401,'confirmation code expired')
 
 
         const result = await userRepository.confirmUserEmail(code)
 
-        if(!result) return createCustomResponse(false,'updating confirmation status error')
+        if(!result) return createCustomResponse(false,500,'updating confirmation status error')
 
-        return createCustomResponse(true,'email is successful accepted')
+        return createCustomResponse(true,204,'email is successful accepted')
     },
 
 

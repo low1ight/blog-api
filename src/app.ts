@@ -6,6 +6,7 @@ import {userRouter} from "./routes/user-router";
 import {authRouter} from "./routes/auth-router";
 import {commentRouter} from "./routes/comment-router";
 import cookieParser from "cookie-parser";
+import {securityRouter} from "./routes/security-router";
 
 export const app = express()
 
@@ -28,6 +29,7 @@ app.set('trust proxy', true)
 app.use(baseUrl + 'blogs', blogRouter)
 app.use(baseUrl + 'posts', postRouter)
 app.use(baseUrl + 'users', userRouter)
+app.use(baseUrl + 'security', securityRouter)
 app.use(baseUrl + 'comments', commentRouter)
 app.use(baseUrl + 'auth', authRouter)
 app.use(baseUrl + 'testing', testingRouter)
