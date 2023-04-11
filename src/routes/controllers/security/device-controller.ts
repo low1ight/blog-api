@@ -3,13 +3,18 @@ import {Request,Response} from "express";
 import {deviceService} from "../../../domain/device-service";
 import {RequestWithParams} from "../../../types/request-type";
 import {IdModel} from "../../../types/models/common/id-model";
+import {authService} from "../../../domain/auth-service";
 
 export const deviceController = {
 
 
     async getDevices(req:Request,res:Response) {
 
-        const devices = await deviceQueryRepository.getAllUserDevices(req.authUserData!.userId)
+        const refreshTokenPayloadData = await authService.verifyRefreshToken(req.cookies.refreshToken)
+
+        if(!refreshTokenPayloadData.successful) return res.sendStatus(401)
+
+        const devices = await deviceQueryRepository.getAllUserDevices(refreshTokenPayloadData.content.userId)
 
         return res.json(devices)
 
@@ -18,10 +23,7 @@ export const deviceController = {
 
     async deleteAllAnotherDevices(req:Request,res:Response) {
 
-        const refreshToken = req.cookies.refreshToken
-        if(!refreshToken) return res.sendStatus(401)
-
-        const deletingResult = await deviceService.deleteAllAnotherDevices(refreshToken,req.authUserData!.userId)
+        const deletingResult = await deviceService.deleteAllAnotherDevices(req.cookies.refreshToken)
 
         if(!deletingResult.successful) return res.sendStatus(401)
 
@@ -35,7 +37,7 @@ export const deviceController = {
 
     async deleteDeviceById(req:RequestWithParams<IdModel>,res:Response) {
 
-        const deletingResult = await deviceService.deleteById(req.params.id,req.authUserData!.userId)
+        const deletingResult = await deviceService.deleteById(req.params.id,req.cookies.refreshToken)
 
         if(!deletingResult.successful) return res.sendStatus(deletingResult.statusCode)
 

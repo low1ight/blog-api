@@ -1,6 +1,6 @@
 import {Router} from "express";
 import {deviceController} from "./controllers/security/device-controller";
-import {bearerAuth} from "../middlewares/bearer-auth";
+import {validateId} from "../middlewares/validators/params-id-validator";
 
 
 export const securityRouter = Router()
@@ -8,8 +8,8 @@ export const securityRouter = Router()
 
 
 
-securityRouter.get('/devices',bearerAuth, deviceController.getDevices)
+securityRouter.get('/devices', deviceController.getDevices)
 
-securityRouter.delete('/devices',bearerAuth, deviceController.deleteAllAnotherDevices)
+securityRouter.delete('/devices', deviceController.deleteAllAnotherDevices)
 
-securityRouter.delete('/devices/:id',bearerAuth, deviceController.deleteDeviceById)
+securityRouter.delete('/devices/:id',validateId, deviceController.deleteDeviceById)

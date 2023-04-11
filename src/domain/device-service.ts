@@ -32,13 +32,13 @@ export const deviceService = {
 
 
 
-    async deleteAllAnotherDevices(refreshToken:string,userId:string) {
+    async deleteAllAnotherDevices(refreshToken:string) {
 
         const response:CustomResponse<RefreshTokenPayloadData> = await authService.verifyRefreshToken(refreshToken)
 
         if(!response.successful) return response
 
-        const deletingResponse = await deviceRepository.deleteAllAnotherDevices(response.content.deviceId, userId)
+        const deletingResponse = await deviceRepository.deleteAllAnotherDevices(response.content.deviceId, response.content.userId)
 
         if(!deletingResponse) return createCustomResponse(false,500,'deleting error')
 
@@ -47,17 +47,25 @@ export const deviceService = {
     },
 
 
-    async deleteById(deviceId:string,userId:string) {
+    async deleteById(deviceId:string,refreshToken:string) {
+
+        const response:CustomResponse<RefreshTokenPayloadData> = await authService.verifyRefreshToken(refreshToken)
+
+        if(!response.successful) return response
+
+
 
         const device:DeviceType | null = await deviceRepository.getDeviceById(deviceId)
 
         if(!device) return createCustomResponse(false,404,"this device don't exist")
 
-        if(device.userId.toString() !== userId) return createCustomResponse(false,403,"can't delete device another user")
+        if(device.userId.toString() !== response.content.userId) return createCustomResponse(false,403,"can't delete device another user")
+
 
         const isDeleted = await deviceRepository.deleteDevice(deviceId)
 
         if(!isDeleted) return createCustomResponse(false,500,"this device don't exist")
+
 
         return createCustomResponse(true,204,"this device don't exist")
     }
