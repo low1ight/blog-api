@@ -2,7 +2,7 @@ import {body} from "express-validator";
 import {errMessages} from "../../../utils/errors/errMessages";
 
 
-export const registrationResendingCodeValidator = [
+export const sendCodeUsingEmailValidator = [
     body('email')
         .exists().withMessage(errMessages.notExist())
         .trim().notEmpty().withMessage(errMessages.isEmpty())

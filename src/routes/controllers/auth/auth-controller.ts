@@ -6,10 +6,11 @@ import {userQueryRepository} from "../../../repository/user/user-query-repositor
 import {UserInputModel} from "../../../types/models/user/user-input-model";
 import {EmailConfirmationInputModel} from "../../../types/models/auth/emailConfirmation-input-model";
 import {CustomResponse} from "../../../utils/errors/custromErrorObj/createCustomResponse";
-import {ResendCodeInputModel} from "../../../types/models/auth/resendCode-input-model";
+import {SendCodeOnEmailInputModel} from "../../../types/models/auth/sendCodeOnEmailInputModel";
 import {errorObj} from "../../../utils/errors/errorObj";
 import {errorBody} from "../../../utils/errors/errorBody";
 import {TokensType} from "../../../types/models/jwt/TokensType";
+import {NewPasswordInputModel} from "../../../types/models/auth/new-password-input-model";
 
 
 export const authController = {
@@ -48,6 +49,15 @@ export const authController = {
     },
 
 
+    async setNewPassword(req:RequestWithBody<NewPasswordInputModel>,res:Response) {
+
+        const result:CustomResponse<string> = await authService.setNewPassword(req.body)
+
+        return res.sendStatus(result.statusCode)
+
+    },
+
+
 
 
     async refreshToken(req:Request,res:Response) {
@@ -80,7 +90,7 @@ export const authController = {
 
     },
 
-    async resendEmailCode(req:RequestWithBody<ResendCodeInputModel>,res:Response) {
+    async resendEmailCode(req:RequestWithBody<SendCodeOnEmailInputModel>, res:Response) {
 
         const result:CustomResponse<string> = await authService.resendConfirmationCode(req.body)
 
@@ -109,6 +119,17 @@ export const authController = {
 
         return res.sendStatus(204)
 
+
+    },
+
+
+    async passwordRecovery(req:RequestWithBody<SendCodeOnEmailInputModel>,res:Response) {
+
+        const result:CustomResponse<string> = await authService.sendPasswordRecoveryCode(req.body)
+
+        if(!result.successful) return res.sendStatus(result.statusCode)
+
+        res.sendStatus(201)
 
     },
 

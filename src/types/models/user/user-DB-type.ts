@@ -17,6 +17,7 @@ export type NewUserData = {
 export type UserData = {
     login:string
     password:string
+    passwordRecoveryCode:string | null
     email:string
     createdAt:Date
     updatedAt:Date

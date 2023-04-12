@@ -9,7 +9,7 @@ import {emailManager} from "../adapters/email-manager";
 import {createCustomResponse, CustomResponse} from "../utils/errors/custromErrorObj/createCustomResponse";
 import {EmailConfirmationInputModel} from "../types/models/auth/emailConfirmation-input-model";
 import { v4 as uuidv4 } from 'uuid';
-import {ResendCodeInputModel} from "../types/models/auth/resendCode-input-model";
+import {SendCodeOnEmailInputModel} from "../types/models/auth/sendCodeOnEmailInputModel";
 import {TokensType} from "../types/models/jwt/TokensType";
 import {deviceService} from "./device-service";
 import {DeviceType} from "../types/models/device/DeviceType";
@@ -17,6 +17,7 @@ import {RefreshTokenPayloadData} from "../types/models/jwt/RefreshTokenPayloadDa
 import jwt from "jsonwebtoken";
 import {settings} from "../settings";
 import {deviceRepository} from "../repository/device/device-repository";
+import {NewPasswordInputModel} from "../types/models/auth/new-password-input-model";
 
 export const authService = {
 
@@ -132,7 +133,7 @@ export const authService = {
        try{
            const user = await userService.registerUser(userData)
 
-           await emailManager.sendEmail(user.userData.email,user.userConfirmation.confirmationCode)
+           await emailManager.sendConfirmationEmailCode(user.userData.email,user.userConfirmation.confirmationCode)
 
            return true
 
@@ -145,7 +146,7 @@ export const authService = {
 
 
 
-    async resendConfirmationCode({email}:ResendCodeInputModel) {
+    async resendConfirmationCode({email}:SendCodeOnEmailInputModel) {
 
         const isEmailConfirmed = await userRepository.isEmailConfirmed(email)
 
@@ -159,7 +160,7 @@ export const authService = {
 
             await userRepository.setNewEmailConfirmationCode(email,newConfirmationCode)
 
-            await emailManager.sendEmail(email,newConfirmationCode)
+            await emailManager.sendConfirmationEmailCode(email,newConfirmationCode)
 
             return createCustomResponse(true,204,'new code successful sent')
 
@@ -168,6 +169,33 @@ export const authService = {
             return createCustomResponse(false,500,e.message)
 
         }
+
+
+    },
+
+
+    async setNewPassword({newPassword,recoveryCode}:NewPasswordInputModel) {
+
+
+        const user = await userRepository.getUserByPasswordRecoveryCode(recoveryCode)
+
+        if(!user) return createCustomResponse(false,400,'expired code')
+
+
+
+        const isUpdatedCode = await userRepository.addNewRecoveryPasswordCodeForUser(user._id.toString(),null)
+
+        if(!isUpdatedCode) return createCustomResponse(false,500,"error updating recovery code for user")
+
+        const hashedPass = await bcrypt.hash(newPassword,10)
+
+
+        const isNewPassSet = await userRepository.setNewPasswordForUser(user._id.toString(),hashedPass)
+
+        if(!isNewPassSet) return createCustomResponse(false,500,"error updating password for user")
+
+        return createCustomResponse(true,204,"success")
+
 
 
     },
@@ -188,6 +216,36 @@ export const authService = {
         if(!result) return createCustomResponse(false,500,'updating confirmation status error')
 
         return createCustomResponse(true,204,'email is successful accepted')
+    },
+
+
+    async sendPasswordRecoveryCode({email}:SendCodeOnEmailInputModel) {
+
+        const user = await userRepository.getUserByEmail(email)
+
+        if(!user) return createCustomResponse(false,204,"don't exist user by this email")
+
+        const newRecoveryCode = uuidv4()
+
+
+        const isUpdatedCode = await userRepository.addNewRecoveryPasswordCodeForUser(user._id.toString(),newRecoveryCode)
+
+        if(!isUpdatedCode) return createCustomResponse(false,500,"error updating recovery code for user")
+
+
+
+
+        try {
+            await emailManager.sendPasswordRecoveryCode(email,newRecoveryCode,user.userData.login)
+            return createCustomResponse(true,204,'success')
+        } catch (e:any) {
+            return createCustomResponse(false,500,e.message)
+        }
+
+
+
+
+
     },
 
 

@@ -5,6 +5,7 @@ import {UserConfirmation, UserData, UserDBType} from "../../types/models/user/us
 export const userDataSchema = new Schema<UserData>({
     login: {type: String, required: true},
     password: {type: String, required: true},
+    passwordRecoveryCode: {type: String, default:null},
     email: {type: String, required: true},
 }, { timestamps: true , _id:false},)
 
