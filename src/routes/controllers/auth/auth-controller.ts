@@ -27,7 +27,7 @@ export const authController = {
         if(!loginResult) return res.sendStatus(401)
 
         return res.status(200)
-            .cookie('refreshToken',loginResult.refreshToken,)
+            .cookie('refreshToken',loginResult.refreshToken,{httpOnly:true,secure:true})
             .json({accessToken:loginResult.accessToken})
 
     },
@@ -63,7 +63,7 @@ export const authController = {
         if(!result.successful) return res.sendStatus(401)
 
         return res.status(200)
-            .cookie('refreshToken',result.content.refreshToken,)
+            .cookie('refreshToken',result.content.refreshToken,{httpOnly:true,secure:true})
             .json({accessToken:result.content.accessToken})
 
 
