@@ -118,7 +118,7 @@ export const authService = {
 
         } catch(e:any) {
 
-            return createCustomResponse(false,500,e.message)
+            return createCustomResponse(false,401,e.message)
 
         }
     },
