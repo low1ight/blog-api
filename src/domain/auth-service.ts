@@ -187,16 +187,15 @@ export const authService = {
 
         if(!isUpdatedCode) return createCustomResponse(false,500,"error updating recovery code for user")
 
-        const hashedPass = await bcrypt.hash(newPassword,10)
 
+        const hashedPass = await bcrypt.hash(newPassword,10)
 
         const isNewPassSet = await userRepository.setNewPasswordForUser(user._id.toString(),hashedPass)
 
         if(!isNewPassSet) return createCustomResponse(false,500,"error updating password for user")
 
+
         return createCustomResponse(true,204,"success")
-
-
 
     },
 
@@ -225,8 +224,8 @@ export const authService = {
 
         if(!user) return createCustomResponse(false,204,"don't exist user by this email")
 
-        const newRecoveryCode = uuidv4()
 
+        const newRecoveryCode = uuidv4()
 
         const isUpdatedCode = await userRepository.addNewRecoveryPasswordCodeForUser(user._id.toString(),newRecoveryCode)
 
@@ -236,7 +235,7 @@ export const authService = {
 
 
         try {
-            await emailManager.sendPasswordRecoveryCode(email,newRecoveryCode,user.userData.login)
+            await emailManager.sendPasswordRecoveryCode(email,newRecoveryCode)
             return createCustomResponse(true,204,'success')
         } catch (e:any) {
             return createCustomResponse(false,500,e.message)

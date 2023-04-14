@@ -129,7 +129,7 @@ export const authController = {
 
         if(!result.successful) return res.sendStatus(result.statusCode)
 
-        res.sendStatus(201)
+        res.sendStatus(204)
 
     },
 

@@ -12,7 +12,6 @@ import {newPasswordValidator} from "../middlewares/validators/auth/new-password-
 export const authRouter = Router()
 
 
-
 authRouter.post('/login',rateLimiter,authController.login)
 
 authRouter.post('/logout', authController.logout)

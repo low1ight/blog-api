@@ -19,14 +19,13 @@ export const emailManager = {
     },
 
 
-    async sendPasswordRecoveryCode(recipient:string, recoveryCode:string,userName:string = 'default') {
+    async sendPasswordRecoveryCode(recipient:string, recoveryCode:string) {
 
 
-        const content = ` <p>Dear ${userName},</p>
-    <p>We received a request to reset your password. Please use the following code to reset your password:</p>
-    <h2 style="background-color: #f1f1f1; padding: 10px;">[ ${recoveryCode} ]</h2>
-    <p>If you did not request a password reset, please ignore this email.</p>
-    <p>Thank you,</p>`
+        const content = ` <h1>Password recovery</h1>
+       <p>To finish password recovery please follow the link below:
+          <a href='https://somesite.com/password-recovery?recoveryCode=${recoveryCode}'>recovery password</a>
+      </p>`
 
 
         await this.sendEmail(recipient,content)
