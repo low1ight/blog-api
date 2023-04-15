@@ -5,11 +5,11 @@ export const emailManager = {
 
     async sendConfirmationEmailCode(recipient:string, confirmationCode:string) {
 
-        const confirmationLink = `https://somesite.com/confirm-email?code=${confirmationCode}`
+
 
         const content = ` <h1>Thank for your registration</h1>
                     <p>To finish registration please follow the link below:
-                    <a href=${confirmationLink}>complete registration</a>
+                    <a href='https://somesite.com/confirm-email?code=${confirmationCode}'>complete registration</a>
                     </p>`
 
 

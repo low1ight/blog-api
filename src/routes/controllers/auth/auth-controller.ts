@@ -53,6 +53,8 @@ export const authController = {
 
         const result:CustomResponse<string> = await authService.setNewPassword(req.body)
 
+        if(!result.successful) return res.status(result.statusCode).json(errorBody(errorObj(result.content,"recoveryCode")))
+
         return res.sendStatus(result.statusCode)
 
     },
