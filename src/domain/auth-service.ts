@@ -148,10 +148,12 @@ export const authService = {
 
     async resendConfirmationCode({email}:SendCodeOnEmailInputModel) {
 
-        const isEmailConfirmed = await userRepository.isEmailConfirmed(email)
 
-        if(isEmailConfirmed) return createCustomResponse(false,401,"email already confirmed")
+        const user:UserDBType | null = await userRepository.getUserByEmail(email)
 
+        if(!user) return createCustomResponse(false,400,"user with this email doesnt exist")
+
+        if(user.userConfirmation.isConfirmed) return createCustomResponse(false,401,"email already confirmed")
 
 
 

@@ -8,9 +8,9 @@ export const jwtService = {
     async createNewTokens(userId:string,sessionId:string,deviceId:string):Promise<TokensType> {
 
 
-        const accessToken = jwt.sign({userId},settings.JWT_SECRET,{expiresIn:'10s'})
+        const accessToken = jwt.sign({userId},settings.JWT_SECRET,{expiresIn:'15m'})
 
-        const refreshToken = jwt.sign({userId,sessionId,deviceId},settings.JWT_SECRET,{expiresIn:'20s'})
+        const refreshToken = jwt.sign({userId,sessionId,deviceId},settings.JWT_SECRET,{expiresIn:'60m'})
 
 
         return {accessToken,refreshToken}
