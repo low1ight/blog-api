@@ -1,7 +1,7 @@
 import {RequestLimiter} from "../../db/models/requestLimiter";
 
 
-export const requestLimiterQueryRepository = {
+export class RequestLimiterQueryRepository  {
 
 
     async getLastRequest(ip:string,reqMethod:string,reqUrl:string,ms:number) {

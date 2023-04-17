@@ -1,21 +1,24 @@
 import {PostInputModel} from "../types/models/post/post-input-model";
+import {BlogQueryRepository} from "../repository/blog/blog-query-repository";
+import {PostRepository} from "../repository/post/post-repository";
+import {PostQueryRepository} from "../repository/post/post-query-repository";
 
-import {blogQueryRepository} from "../repository/blog/blog-query-repository";
-import {postRepository} from "../repository/post/post-repository";
-import {postQueryRepository} from "../repository/post/post-query-repository";
 
+export class PostService  {
 
-export const postService = {
+    constructor(protected blogQueryRepository:BlogQueryRepository,
+                protected postRepository:PostRepository,
+                protected postQueryRepository:PostQueryRepository) {}
 
     async createPost(newPostData:PostInputModel) {
 
-        const blog = await blogQueryRepository.getBlogById(newPostData.blogId)
+        const blog = await this.blogQueryRepository.getBlogById(newPostData.blogId)
 
 
         //blog must exist (we check it in validation middleware)
-        return await postRepository.createPost(newPostData,blog!.name)
+        return await this.postRepository.createPost(newPostData,blog!.name)
 
-    },
+    }
 
 
 
@@ -23,26 +26,26 @@ export const postService = {
 
 
 
-        const isPostExist = postQueryRepository.isPostExist(postId)
+        const isPostExist = this.postQueryRepository.isPostExist(postId)
 
         if(!isPostExist) return false
 
-        const blog = await blogQueryRepository.getBlogById(newPostData.blogId)
+        const blog = await this.blogQueryRepository.getBlogById(newPostData.blogId)
 
 
         //blog must exist (we check it in validation middleware)
-        return await postRepository.updatePost(newPostData,blog!.name,postId)
+        return await this.postRepository.updatePost(newPostData,blog!.name,postId)
 
-    },
+    }
 
 
     async deletePost(postId:string):Promise<boolean> {
 
-        const isPostExist = postQueryRepository.isPostExist(postId)
+        const isPostExist = this.postQueryRepository.isPostExist(postId)
 
         if(!isPostExist) return false
 
-        return await postRepository.deletePost(postId)
+        return await this.postRepository.deletePost(postId)
     }
 
 

@@ -1,4 +1,4 @@
-import {userRepository} from "../../../repository/user/user-repository";
+import {userRepository} from "../../../composition-root";
 
 export const isEmailExist = async (email:string) => {
 

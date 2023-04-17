@@ -1,11 +1,13 @@
-import {requestLimiterRepository} from "../repository/requestLimiter/requestLimiter-repository";
+import {RequestLimiterRepository} from "../repository/requestLimiter/requestLimiter-repository";
 
 
-export const requestLimiterService = {
+export class RequestLimiterService  {
 
+    constructor(protected requestLimiterRepository:RequestLimiterRepository) {
+    }
 
     async addNewRequest(ip:string,reqMethod:string,reqUrl:string) {
-        return await requestLimiterRepository.createNewRequest(ip,reqMethod,reqUrl)
+        return await this.requestLimiterRepository.createNewRequest(ip,reqMethod,reqUrl)
     }
 
 }

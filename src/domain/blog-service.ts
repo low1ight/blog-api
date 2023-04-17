@@ -1,35 +1,39 @@
 import {BlogInputModel} from "../types/models/blog/blog-input-model";
-import {blogRepository} from "../repository/blog/blog-repository";
-import {blogQueryRepository} from "../repository/blog/blog-query-repository";
+import {BlogRepository} from "../repository/blog/blog-repository";
+import {BlogQueryRepository} from "../repository/blog/blog-query-repository";
 
 
-export const blogService = {
+export class BlogService  {
+
+
+    constructor(protected blogRepository:BlogRepository,
+                protected blogQueryRepository:BlogQueryRepository) {}
 
 
     async createBlog(newBlogData:BlogInputModel) {
 
-        return await blogRepository.createBlog(newBlogData)
+        return await this.blogRepository.createBlog(newBlogData)
 
-    },
+    }
 
 
     async updateBlog(id:string,newBlogData:BlogInputModel):Promise<boolean> {
 
-        const isBlogExist:boolean = await blogQueryRepository.isBlogExist(id)
+        const isBlogExist:boolean = await this.blogQueryRepository.isBlogExist(id)
 
         if(!isBlogExist) return false
 
-        return await blogRepository.updateBlog(id,newBlogData)
+        return await this.blogRepository.updateBlog(id,newBlogData)
 
-    },
+    }
 
     async deleteBlog(id:string):Promise<boolean> {
 
-        const isBlogExist:boolean = await blogQueryRepository.isBlogExist(id)
+        const isBlogExist:boolean = await this.blogQueryRepository.isBlogExist(id)
 
         if(!isBlogExist) return false
 
-        return await blogRepository.deleteBlog(id)
+        return await this.blogRepository.deleteBlog(id)
 
     }
 

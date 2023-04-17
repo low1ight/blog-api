@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer'
 
 
-export const emailManager = {
+export class EmailManager {
 
     async sendConfirmationEmailCode(recipient:string, confirmationCode:string) {
 
@@ -16,7 +16,7 @@ export const emailManager = {
         await this.sendEmail(recipient,content)
 
 
-    },
+    }
 
 
     async sendPasswordRecoveryCode(recipient:string, recoveryCode:string) {
@@ -31,7 +31,7 @@ export const emailManager = {
         await this.sendEmail(recipient,content)
 
 
-    },
+    }
 
 
     async sendEmail(recipient:string,letterContent:string) {

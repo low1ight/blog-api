@@ -5,13 +5,13 @@ import {userToAuthMeModel} from "../_mappers/userToAuthMeModel";
 import {User} from "../../db/models/user";
 
 
-export const userQueryRepository = {
+export class UserQueryRepository {
 
     async getUser(query:UserQueryType) {
 
         return await getUsersWithQuery(query)
 
-    },
+    }
 
 
     async getUserDataForAuthMe(id:string) {

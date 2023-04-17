@@ -3,7 +3,7 @@ import {ObjectId} from "mongoose";
 import {DeviceType} from "../../types/models/device/DeviceType";
 
 
-export const deviceRepository = {
+export class DeviceRepository  {
 
     async createDevice(sessionId:string,title:string,ip:string,userId:ObjectId):Promise<DeviceType> {
 
@@ -15,7 +15,7 @@ export const deviceRepository = {
           })
 
 
-    },
+    }
 
     async refreshSessionId(deviceId:string,newSessionId:string):Promise<boolean> {
 
@@ -24,7 +24,7 @@ export const deviceRepository = {
         return result.matchedCount === 1
 
 
-    },
+    }
 
     async getCurrentDeviceSessionId(deviceId:string):Promise<string | null> {
 
@@ -35,7 +35,7 @@ export const deviceRepository = {
         return result.sessionId
 
 
-    },
+    }
 
 
     async deleteDevice(deviceId:string) {
@@ -44,11 +44,11 @@ export const deviceRepository = {
 
         return result.deletedCount === 1
 
-    },
+    }
 
     async getDeviceById(deviceId:string) {
         return Device.findOne({_id:deviceId})
-    },
+    }
 
     async deleteAllAnotherDevices(currentDeviceId:string,userId:string) {
 
@@ -57,7 +57,7 @@ export const deviceRepository = {
         return result.deletedCount >= 0
 
 
-    },
+    }
 
 
 

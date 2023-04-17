@@ -3,7 +3,7 @@ import {UserQueryType} from "../../types/queryType/user/user-query-type";
 
 
 
-export const blogQueryMapper = ({searchLoginTerm,searchEmailTerm,sortBy,sortDirection,pageNumber,pageSize}:UserInputQueryType):UserQueryType => {
+export const userQueryMapper = ({searchLoginTerm,searchEmailTerm,sortBy,sortDirection,pageNumber,pageSize}:UserInputQueryType):UserQueryType => {
     return {
         searchLoginTerm: searchLoginTerm || null,
         searchEmailTerm:searchEmailTerm || null,

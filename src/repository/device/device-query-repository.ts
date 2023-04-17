@@ -3,7 +3,7 @@ import {devicesArrToViewModel} from "../_mappers/toDeviceViewModel";
 import {DeviceType} from "../../types/models/device/DeviceType";
 
 
-export const deviceQueryRepository = {
+export class DeviceQueryRepository  {
 
     async getAllUserDevices(userId:string) {
 
@@ -11,7 +11,6 @@ export const deviceQueryRepository = {
 
         return devicesArrToViewModel(devices)
     }
-
 
 
 }

@@ -7,7 +7,7 @@ import {CommentViewModel} from "../../types/models/comment/comment-view-model";
 import {CommentDBType} from "../../types/models/comment/comment-DB-type";
 
 
-export const commentRepository = {
+export class CommentRepository  {
 
 
 
@@ -25,7 +25,7 @@ export const commentRepository = {
 
 
         return commentsObjToViewModel(comment)
-    },
+    }
 
 
 
@@ -39,7 +39,7 @@ export const commentRepository = {
 
         return updatingResult.matchedCount === 1
 
-    },
+    }
 
 
 
@@ -48,14 +48,14 @@ export const commentRepository = {
         const comment = await Comment.exists({_id:id})
 
         return comment !== null
-    },
+    }
 
 
 
     async getCommentById(id:string):Promise<CommentDBType | null> {
         return Comment.findOne({_id:id})
 
-    },
+    }
 
 
     async deleteComment(id:string):Promise<boolean> {

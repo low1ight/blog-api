@@ -1,29 +1,33 @@
-import {deviceQueryRepository} from "../../../repository/device/device-query-repository";
 import {Request,Response} from "express";
-import {deviceService} from "../../../domain/device-service";
 import {RequestWithParams} from "../../../types/request-type";
 import {IdModel} from "../../../types/models/common/id-model";
-import {authService} from "../../../domain/auth-service";
+import {DeviceService} from "../../../domain/device-service";
+import {JwtService} from "../../../application/jwt-service";
+import {DeviceQueryRepository} from "../../../repository/device/device-query-repository";
 
-export const deviceController = {
+export class DeviceController  {
+
+    constructor(protected jwtService:JwtService,
+                protected deviceQueryRepository:DeviceQueryRepository,
+                protected deviceService:DeviceService) {}
 
 
     async getDevices(req:Request,res:Response) {
 
-        const refreshTokenPayloadData = await authService.verifyRefreshToken(req.cookies.refreshToken)
+        const refreshTokenPayloadData = await this.jwtService.verifyRefreshToken(req.cookies.refreshToken)
 
         if(!refreshTokenPayloadData.successful) return res.sendStatus(401)
 
-        const devices = await deviceQueryRepository.getAllUserDevices(refreshTokenPayloadData.content.userId)
+        const devices = await this.deviceQueryRepository.getAllUserDevices(refreshTokenPayloadData.content.userId)
 
         return res.json(devices)
 
-    },
+    }
 
 
     async deleteAllAnotherDevices(req:Request,res:Response) {
 
-        const deletingResult = await deviceService.deleteAllAnotherDevices(req.cookies.refreshToken)
+        const deletingResult = await this.deviceService.deleteAllAnotherDevices(req.cookies.refreshToken)
 
         if(!deletingResult.successful) return res.sendStatus(401)
 
@@ -32,12 +36,12 @@ export const deviceController = {
 
 
 
-    },
+    }
 
 
     async deleteDeviceById(req:RequestWithParams<IdModel>,res:Response) {
 
-        const deletingResult = await deviceService.deleteById(req.params.id,req.cookies.refreshToken)
+        const deletingResult = await this.deviceService.deleteById(req.params.id,req.cookies.refreshToken)
 
         if(!deletingResult.successful) return res.sendStatus(deletingResult.statusCode)
 

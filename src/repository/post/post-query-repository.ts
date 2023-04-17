@@ -7,7 +7,7 @@ import {ViewModelWithPaginator} from "../../types/models/ViewModelWithPaginator"
 import {PostQueryType} from "../../types/queryType/post/post-query-type";
 
 
-export const postQueryRepository = {
+export class PostQueryRepository  {
 
 
     async getPosts(query:PostQueryType):Promise<ViewModelWithPaginator<PostViewModel[]>> {
@@ -15,7 +15,7 @@ export const postQueryRepository = {
         return await getPostsWithQuery(query)
 
 
-    },
+    }
 
 
     async getPostById(id:string):Promise<PostViewModel | null> {
@@ -25,7 +25,7 @@ export const postQueryRepository = {
         if(!result) return null
 
         return postsObjToViewModel(result)
-    },
+    }
 
 
     async isPostExist(id:string):Promise<boolean> {
@@ -33,7 +33,7 @@ export const postQueryRepository = {
         const result = await Post.exists({_id:id})
 
         return result !== null
-    },
+    }
 
     async getBlogPosts(query:PostQueryType,blogId:string):Promise<ViewModelWithPaginator<PostViewModel[]>> {
 

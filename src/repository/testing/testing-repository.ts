@@ -4,7 +4,7 @@ import {User} from "../../db/models/user";
 import {Device} from "../../db/models/device";
 
 
-export const testingRepository = {
+export class TestingRepository  {
 
     async deleteAllData():Promise<void> {
 

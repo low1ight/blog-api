@@ -1,5 +1,4 @@
 import {Router} from "express";
-import {authController} from "./controllers/auth/auth-controller";
 import {bearerAuth} from "../middlewares/bearer-auth";
 import {userValidator} from "../middlewares/validators/user/user-validator";
 import {errFormatter} from "../middlewares/validators/validationResult";
@@ -7,25 +6,26 @@ import {registrationConfirmationValidator} from "../middlewares/validators/auth/
 import {sendCodeUsingEmailValidator} from "../middlewares/validators/auth/send-code-using-email-validator";
 import {rateLimiter} from "../middlewares/requestLimiter";
 import {newPasswordValidator} from "../middlewares/validators/auth/new-password-validator";
+import {authController} from "../composition-root";
 
 
 export const authRouter = Router()
 
 
-authRouter.post('/login',rateLimiter,authController.login)
+authRouter.post('/login',rateLimiter,authController.login.bind(authController))
 
-authRouter.post('/logout', authController.logout)
+authRouter.post('/logout', authController.logout.bind(authController))
 
-authRouter.post('/password-recovery',rateLimiter,sendCodeUsingEmailValidator,errFormatter, authController.passwordRecovery)
+authRouter.post('/password-recovery',rateLimiter,sendCodeUsingEmailValidator,errFormatter, authController.passwordRecovery.bind(authController))
 
-authRouter.post('/new-password',rateLimiter,newPasswordValidator,errFormatter, authController.setNewPassword)
+authRouter.post('/new-password',rateLimiter,newPasswordValidator,errFormatter, authController.setNewPassword.bind(authController))
 
-authRouter.post('/registration',rateLimiter,userValidator,errFormatter, authController.registration)
+authRouter.post('/registration',rateLimiter,userValidator,errFormatter, authController.registration.bind(authController))
 
-authRouter.post('/registration-confirmation',rateLimiter,registrationConfirmationValidator,errFormatter, authController.confirmEmail)
+authRouter.post('/registration-confirmation',rateLimiter,registrationConfirmationValidator,errFormatter, authController.confirmEmail.bind(authController))
 
-authRouter.post('/refresh-token', authController.refreshToken)
+authRouter.post('/refresh-token', authController.refreshToken.bind(authController))
 
-authRouter.post('/registration-email-resending',rateLimiter,sendCodeUsingEmailValidator,errFormatter, authController.resendEmailCode)
+authRouter.post('/registration-email-resending',rateLimiter,sendCodeUsingEmailValidator,errFormatter, authController.resendEmailCode.bind(authController))
 
-authRouter.get('/me', bearerAuth, authController.me)
+authRouter.get('/me', bearerAuth, authController.me.bind(authController))

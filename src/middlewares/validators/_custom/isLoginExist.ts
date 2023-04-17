@@ -1,5 +1,5 @@
+import {userRepository} from "../../../composition-root";
 
-import {userRepository} from "../../../repository/user/user-repository";
 
 export const isLoginExist = async (login:string) => {
 

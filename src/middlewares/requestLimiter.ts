@@ -1,6 +1,6 @@
 import {NextFunction,Request,Response} from "express";
-import {requestLimiterQueryRepository} from "../repository/requestLimiter/requestLimiter-query-repository";
-import {requestLimiterService} from "../domain/requsetLimiter-service";
+import {requestLimiterQueryRepository, requestLimiterService} from "../composition-root";
+
 
 
 export const rateLimiter = async (req:Request,res:Response,next:NextFunction) => {

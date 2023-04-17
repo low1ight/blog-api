@@ -4,8 +4,7 @@ import {blogObjToViewModel} from "../_mappers/toBlogViewModel";
 import {BlogViewModel} from "../../types/models/blog/blog-view-model";
 
 
-export const blogRepository = {
-
+export class BlogRepository  {
 
 
     async createBlog({name,description,websiteUrl}:BlogInputModel):Promise<BlogViewModel> {
@@ -22,7 +21,7 @@ export const blogRepository = {
         return blogObjToViewModel(result)
 
 
-    },
+    }
 
     async updateBlog(blogId:string, {name,description,websiteUrl}:BlogInputModel):Promise<boolean> {
 
@@ -31,7 +30,7 @@ export const blogRepository = {
         return result.matchedCount > 0
 
 
-    },
+    }
 
     async deleteBlog(blogId:string):Promise<boolean> {
 
@@ -41,7 +40,6 @@ export const blogRepository = {
 
 
     }
-
 
 
 }

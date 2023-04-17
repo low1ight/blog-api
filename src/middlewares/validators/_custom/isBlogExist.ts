@@ -1,5 +1,5 @@
-import {blogQueryRepository} from "../../../repository/blog/blog-query-repository";
 import {ObjectId} from "mongodb";
+import {blogQueryRepository} from "../../../composition-root";
 
 
 export const isBlogExist = async (blogId:string) => {

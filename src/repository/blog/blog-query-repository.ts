@@ -7,14 +7,14 @@ import {getBlogsWithQuery} from "../_common-func/blog/getBlogsWithQuery";
 import {ViewModelWithPaginator} from "../../types/models/ViewModelWithPaginator";
 
 
-export const blogQueryRepository = {
+export class BlogQueryRepository  {
 
 
     async getBlogs(query:BlogQueryType): Promise<ViewModelWithPaginator<BlogViewModel[]>> {
 
         return await getBlogsWithQuery(query)
 
-    },
+    }
 
 
     async getBlogById(id: string): Promise<BlogViewModel | null> {
@@ -25,7 +25,7 @@ export const blogQueryRepository = {
 
         return blogObjToViewModel(result)
 
-    },
+    }
 
     async isBlogExist(id: string): Promise<boolean> {
 

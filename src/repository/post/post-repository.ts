@@ -5,7 +5,7 @@ import {PostDBType} from "../../types/models/post/post-DB-type";
 import {PostViewModel} from "../../types/models/post/post-view-model";
 
 
-export const postRepository = {
+export class PostRepository  {
 
     async createPost({title, shortDescription, content, blogId}: PostInputModel, blogName: string):Promise<PostViewModel> {
 
@@ -23,7 +23,7 @@ export const postRepository = {
         return postsObjToViewModel(newPost)
 
 
-    },
+    }
 
 
 
@@ -33,7 +33,7 @@ export const postRepository = {
 
         return updateResult.matchedCount > 0
 
-    },
+    }
 
 
     async deletePost(postId:string):Promise<boolean> {

@@ -1,13 +1,15 @@
 import {RequestWithParams} from "../../../types/request-type";
 import {IdModel} from "../../../types/models/common/id-model";
 import {Response} from "express";
-import {testingService} from "../../../domain/testing-service";
+import {TestingService} from "../../../domain/testing-service";
 
-export const testingController = {
+export class TestingController {
+
+    constructor(protected testingService:TestingService) {}
 
     async deleteAllData(req:RequestWithParams<IdModel>,res:Response) {
         try {
-           await testingService.deleteAllData()
+           await this.testingService.deleteAllData()
             res.sendStatus(204)
 
         } catch (e:any) {

@@ -1,7 +1,7 @@
 import {RequestWithParams} from "../../../types/request-type";
 import {IdModel} from "../../../types/models/common/id-model";
 import {NextFunction,Response} from "express";
-import {commentRepository} from "../../../repository/comment/comment-repository";
+import {commentRepository} from "../../../composition-root";
 
 
 export const isCommentOwner = async (req:RequestWithParams<IdModel>,res:Response,next:NextFunction) => {

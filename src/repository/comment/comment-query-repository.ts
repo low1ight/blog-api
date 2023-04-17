@@ -5,12 +5,12 @@ import {Comment} from "../../db/models/comment";
 import {commentsObjToViewModel} from "../_mappers/toCommentViewModel";
 
 
-export const commentQueryRepository = {
+export class CommentQueryRepository  {
 
     async getPostComments(query:CommentQueryType,postId:string) {
 
        return getCommentsWithQuery(query, {postId})
-    },
+    }
 
 
     async getCommentById(id:string):Promise<CommentViewModel | null> {

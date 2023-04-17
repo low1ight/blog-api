@@ -5,7 +5,7 @@ import {UserConfirmation, UserDBType} from "../../types/models/user/user-DB-type
 import {UserViewModel} from "../../types/models/user/user-view-model";
 
 
-export const userRepository = {
+export class UserRepository  {
 
 
     async getUserById(id: string): Promise<UserDBType | null> {
@@ -14,7 +14,7 @@ export const userRepository = {
         if (!result) return null
 
         return result
-    },
+    }
 
     async getUserByEmail(email: string): Promise<UserDBType | null> {
         const result = await User.findOne({"userData.email": email})
@@ -22,7 +22,7 @@ export const userRepository = {
         if (!result) return null
 
         return result
-    },
+    }
 
     async getUserByPasswordRecoveryCode(code: string): Promise<UserDBType | null> {
         const result = await User.findOne({"userData.passwordRecoveryCode": code})
@@ -30,7 +30,7 @@ export const userRepository = {
         if (!result) return null
 
         return result
-    },
+    }
 
     async createUser(userData: UserInputModel, userConfirmation: UserConfirmation): Promise<UserViewModel> {
 
@@ -41,7 +41,7 @@ export const userRepository = {
 
         return userObjToViewModel(newUser)
 
-    },
+    }
 
     async addNewRecoveryPasswordCodeForUser(id:string,code:string | null) {
         const result = await User.updateOne({_id:id}, {"userData.passwordRecoveryCode": code})
@@ -49,7 +49,7 @@ export const userRepository = {
         return result.matchedCount === 1
 
 
-    },
+    }
 
 
     async registerUser(userData: UserInputModel, userConfirmation: UserConfirmation): Promise<UserDBType> {
@@ -60,13 +60,13 @@ export const userRepository = {
         })
 
 
-    },
+    }
 
     async setNewPasswordForUser(id:string,newPassword:string) {
         const result = await User.updateOne({_id:id}, {"userData.password": newPassword})
 
         return result.matchedCount === 1
-    },
+    }
 
 
     async deleteUser(userId: string): Promise<boolean> {
@@ -74,7 +74,7 @@ export const userRepository = {
         const result = await User.deleteOne({_id: userId})
 
         return result.deletedCount === 1
-    },
+    }
 
 
     async isUserExist(userId: string): Promise<boolean> {
@@ -84,14 +84,14 @@ export const userRepository = {
         return result !== null
 
 
-    },
+    }
 
 
     async getUserByLoginOrEmail(loginOrEmail: string): Promise<UserDBType | null> {
 
         return User.findOne({$or: [{"userData.login": loginOrEmail}, {"userData.email": loginOrEmail}]})
 
-    },
+    }
 
     async isEmailExist(email: string): Promise<boolean> {
 
@@ -99,7 +99,7 @@ export const userRepository = {
 
         return result !== null
 
-    },
+    }
 
     async isLoginExist(login: string): Promise<boolean> {
 
@@ -107,13 +107,13 @@ export const userRepository = {
 
         return result !== null
 
-    },
+    }
 
     async getUserByEmailConfirmationCode(code: string): Promise<UserDBType | null> {
 
         return User.findOne({"userConfirmation.confirmationCode": code})
 
-    },
+    }
 
     async confirmUserEmail(code: string) {
 
@@ -121,13 +121,13 @@ export const userRepository = {
 
         return result.matchedCount === 1
 
-    },
+    }
 
     async setNewEmailConfirmationCode(email: string, code: string) {
         const result = await User.updateOne({"userData.email": email}, {"userConfirmation.confirmationCode": code})
 
         return result.matchedCount === 1
-    },
+    }
 
     async isEmailConfirmed(email: string): Promise<boolean> {
 
