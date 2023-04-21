@@ -1,25 +1,31 @@
 import {getCommentsWithQuery} from "../_common-func/comment/getCommentsWithQuery";
 import {CommentQueryType} from "../../types/queryType/comment/comment-query-type";
-import {CommentViewModel} from "../../types/models/comment/comment-view-model";
 import {Comment} from "../../db/models/comment";
 import {commentsObjToViewModel} from "../_mappers/toCommentViewModel";
+import {ActivityElem} from "../../types/models/user/user-DB-type";
+
 
 
 export class CommentQueryRepository  {
 
-    async getPostComments(query:CommentQueryType,postId:string) {
+    async getPostComments(query:CommentQueryType,postId:string,userActivity:null | ActivityElem) {
 
-       return getCommentsWithQuery(query, {postId})
+       return getCommentsWithQuery(query,userActivity,{postId})
+
     }
 
 
-    async getCommentById(id:string):Promise<CommentViewModel | null> {
+    async getCommentById(id:string,commentUserActivity:ActivityElem | null):Promise<any> {
 
-        const comment = await Comment.findById(id)
+        //{likes: { $slice: [ 0,5 ] }}
+
+
+        const comment = await Comment.findOne({_id:id})
 
         if(!comment) return null
 
-        return commentsObjToViewModel(comment)
+        return commentsObjToViewModel(comment,commentUserActivity)
+
 
     }
 

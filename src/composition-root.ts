@@ -83,7 +83,7 @@ const authService = new AuthService(userRepository,userService,deviceRepository,
 //controllers
 export const deviceController = new DeviceController(jwtService,deviceQueryRepository,deviceService)
 export const blogController = new BlogController(blogService,blogQueryRepository)
-export const commentController = new CommentController(commentService,commentQueryRepository)
+export const commentController = new CommentController(commentService,userRepository,commentQueryRepository)
 export const blogPostsController = new BlogPostsController(postService,postQueryRepository,blogQueryRepository)
 export const postController = new PostController(postService,postQueryRepository)
 export const postCommentsController = new PostCommentsController(commentService,postQueryRepository,commentQueryRepository)

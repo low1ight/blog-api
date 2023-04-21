@@ -24,10 +24,12 @@ export class PostCommentsController  {
         if(!isPostExist) return res.sendStatus(404)
 
 
+        const commentUserActivity = req.userActivity?.commentActivity || null
+
 
         const query = commentQueryMapper(req.query)
 
-       const comments = await this.commentQueryRepository.getPostComments(query,req.params.id)
+       const comments = await this.commentQueryRepository.getPostComments(query,req.params.id,commentUserActivity)
 
         return res.json(comments)
 

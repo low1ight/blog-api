@@ -24,7 +24,7 @@ export class CommentRepository  {
         })
 
 
-        return commentsObjToViewModel(comment)
+        return commentsObjToViewModel(comment,null)
     }
 
 
@@ -64,6 +64,56 @@ export class CommentRepository  {
 
         return deletingResult.deletedCount === 1
 
+    }
+
+
+
+    async isUserLikeStatusExist(userId:string,commentId:string):Promise<boolean> {
+        const status = await Comment.findOne(
+            {
+                _id: commentId,
+                $or: [
+                    {"likes.userId": userId},
+                    {"dislikes.userId": userId}
+                ]
+            })
+
+        return !!status
+    }
+
+    async createLikeStatus(commentId:string,userId:string,likeStatus:string) {
+
+        const likeObj = {userId:new Types.ObjectId(userId)}
+
+        if(likeStatus === "Like") {
+
+            return Comment.updateOne(
+                { _id: commentId },
+                { $push: { likes: likeObj } },
+            );
+        }
+
+        return Comment.updateOne(
+            { _id: commentId },
+            { $push: { dislikes: likeObj } },
+        );
+
+    }
+
+
+
+    async deleteLikeStatus(commentId:string,userId:string) {
+        const deletingResult = await Comment.updateOne(
+            {_id:commentId},
+            {$pull: {
+                likes:{userId},
+                dislikes:{userId}
+            }},
+
+
+        )
+
+        return deletingResult.matchedCount === 1
     }
 
 

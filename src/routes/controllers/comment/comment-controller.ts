@@ -5,11 +5,15 @@ import {Response} from "express"
 import {CommentService} from "../../../domain/comment-service";
 import {CommentQueryRepository} from "../../../repository/comment/comment-query-repository";
 import {CommentViewModel} from "../../../types/models/comment/comment-view-model";
+import {LikeStatusModel} from "../../../types/models/comment/like-status-input-model";
+import {CustomResponse} from "../../../utils/errors/custromErrorObj/createCustomResponse";
+import {UserRepository} from "../../../repository/user/user-repository";
 
 
 export class CommentController  {
 
     constructor(protected commentService:CommentService,
+                protected userRepository:UserRepository,
                 protected commentQueryRepository:CommentQueryRepository) {}
 
     async updateComment(req:RequestWithParamsAndBody<IdModel, CommentInputModel>,res:Response) {
@@ -23,15 +27,27 @@ export class CommentController  {
 
     }
 
+    async setLikeStatus(req:RequestWithParamsAndBody<IdModel, LikeStatusModel>,res:Response) {
+
+        const result:CustomResponse<string> = await this.commentService.setLikeStatus(req.body.likeStatus,req.params.id,req.authUserData!.userId)
+
+        return res.sendStatus(result.statusCode)
+
+
+    }
+
     async getCommentById(req:RequestWithParams<IdModel>,res:Response) {
 
-        const comment:CommentViewModel | null = await  this.commentQueryRepository.getCommentById(req.params.id)
+         const commentUserActivity = req.userActivity?.commentActivity || null
+
+        const comment:CommentViewModel | null = await this.commentQueryRepository.getCommentById(req.params.id,commentUserActivity)
 
         if(!comment) return res.sendStatus(404)
 
         return res.json(comment)
 
     }
+
 
     async deleteComment(req:RequestWithParams<IdModel>,res:Response) {
 
