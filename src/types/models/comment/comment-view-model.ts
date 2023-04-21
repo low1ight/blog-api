@@ -4,8 +4,16 @@ export type CommentViewModel = {
     content:string
     commentatorInfo:CommentatorViewModel
     createdAt:Date
+    likesInfo:LikesInfo
 }
 
+
+
+type LikesInfo = {
+    likesCount:number
+    dislikesCount:number
+    myStatus:String
+}
 
 
 export type CommentatorViewModel = {

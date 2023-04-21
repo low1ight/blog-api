@@ -1,4 +1,5 @@
 import {ObjectId} from "mongoose";
+import {CommentDislikeStatus, CommentLikeStatus} from "./comment-like-status";
 
 
 export type CommentDBType = {
@@ -8,6 +9,10 @@ export type CommentDBType = {
     commentatorInfo:CommentatorInfo
     createdAt:Date
     updatedAt:Date
+    likes: CommentLikeStatus[]
+    dislikes:CommentDislikeStatus[]
+    likesCount:number
+    dislikesCount:number
 }
 
 
