@@ -32,8 +32,7 @@ export const commentsObjToViewModel = (item:CommentDBType, userActivity:null | A
             likesCount:item.likesCount,
             dislikesCount:item.dislikesCount,
             myStatus:userLike && "Like" || userDislike && "Dislike" || "None"
-
         }
-
     }
 }
+//нормализация баз данных

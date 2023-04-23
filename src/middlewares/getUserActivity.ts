@@ -10,8 +10,11 @@ export const getUserActivity = async (req:Request,res:Response,next:NextFunction
     let userActivity:UserActivity | null = null
 
     if(currentUserId) {
-         userActivity = await userRepository.getUserActivityById(currentUserId)
+
+        userActivity = await userRepository.getUserActivityById(currentUserId)
+
         req.userActivity = userActivity
+
     }
 
     next()

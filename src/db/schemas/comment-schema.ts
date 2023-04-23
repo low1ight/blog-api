@@ -22,9 +22,12 @@ export const commentSchema = new Schema<CommentDBType>({
 }, { timestamps: true ,toJSON: { virtuals: true } })
 
 
+
+
 commentSchema.virtual('likesCount').get(function() {
     return this.likes.length;
 });
+
 commentSchema.virtual('dislikesCount').get(function() {
     return this.dislikes.length;
 });

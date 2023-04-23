@@ -10,9 +10,13 @@ import {createCustomResponse} from "../utils/errors/custromErrorObj/createCustom
 export class CommentService {
 
 
+
     constructor(protected commentRepository:CommentRepository,
                 protected postQueryRepository:PostQueryRepository,
-                protected userRepository:UserRepository) {}
+                protected userRepository:UserRepository) {
+
+
+    }
 
     async createComment(commentData:CommentInputModel,postId:string,userId:string,):Promise<CommentViewModel | null> {
 
@@ -58,16 +62,14 @@ export class CommentService {
 
             if (isDeleteUserLike && isDeleteCommentLike) return createCustomResponse(true, 204, 'successful')
 
-            return createCustomResponse(false, 500, 'db err')
+            return createCustomResponse(false, 400, 'db err')
 
         } else {
 
             if(isLikesExist) {
 
-                const isUpdateUserLike = await userRepository.deleteLikeStatus(commentId, userId)
-                const isUpdateCommentLike = await commentRepository.deleteLikeStatus(commentId, userId)
-
-                if(isUpdateUserLike && isUpdateCommentLike) return createCustomResponse(true, 204, 'successful')
+                await userRepository.deleteLikeStatus(commentId, userId)
+                await commentRepository.deleteLikeStatus(commentId, userId)
 
             }
 
@@ -80,9 +82,6 @@ export class CommentService {
                 return createCustomResponse(true, 204, 'successful')
             }
             return createCustomResponse(false, 500, 'db err')
-
-
-
 
 
 

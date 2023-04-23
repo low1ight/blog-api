@@ -29,7 +29,10 @@ export class CommentController  {
 
     async setLikeStatus(req:RequestWithParamsAndBody<IdModel, LikeStatusModel>,res:Response) {
 
-        const result:CustomResponse<string> = await this.commentService.setLikeStatus(req.body.likeStatus,req.params.id,req.authUserData!.userId)
+        const result:CustomResponse<string> = await this.commentService.setLikeStatus(
+            req.body.likeStatus,
+            req.params.id,
+            req.authUserData!.userId)
 
         return res.sendStatus(result.statusCode)
 
