@@ -30,6 +30,8 @@ import {CommentController} from "./routes/controllers/comment/comment-controller
 import {PostController} from "./routes/controllers/post/post-controller";
 import {PostCommentsController} from "./routes/controllers/post/post-comments-controller";
 import {TestingController} from "./routes/controllers/testing/testing-controller";
+import {LikeRepository} from "./repository/like/like-repository";
+import {LikeService} from "./domain/like-service";
 
 
 
@@ -39,6 +41,7 @@ const emailManager = new EmailManager()
 
 
 //repositories
+export const likeRepository = new LikeRepository()
 export const userRepository = new UserRepository()
 const deviceRepository = new DeviceRepository()
 const blogRepository = new BlogRepository()
@@ -65,10 +68,11 @@ export const jwtService = new JwtService(deviceRepository)
 
 
 //services
+const likeService = new LikeService(likeRepository)
 const deviceService = new DeviceService(deviceRepository,jwtService)
 const userService = new UserService(userRepository)
 const blogService = new BlogService(blogRepository,blogQueryRepository)
-const commentService = new CommentService(commentRepository,postQueryRepository,userRepository)
+const commentService = new CommentService(commentRepository,postQueryRepository,userRepository,likeService)
 const postService = new PostService(blogQueryRepository,postRepository,postQueryRepository)
 export const requestLimiterService = new RequestLimiterService(requestLimiterRepository)
 const testingService = new TestingService(testingRepository)
@@ -86,7 +90,7 @@ export const blogController = new BlogController(blogService,blogQueryRepository
 export const commentController = new CommentController(commentService,userRepository,commentQueryRepository)
 export const blogPostsController = new BlogPostsController(postService,postQueryRepository,blogQueryRepository)
 export const postController = new PostController(postService,postQueryRepository)
-export const postCommentsController = new PostCommentsController(commentService,postQueryRepository,commentQueryRepository)
+export const postCommentsController = new PostCommentsController(commentService,postQueryRepository,likeRepository,commentQueryRepository)
 export const testingController = new TestingController(testingService)
 export const userController = new UserController(userService,userQueryRepository)
 export const authController = new AuthController(authService,userQueryRepository)

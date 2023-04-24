@@ -5,6 +5,8 @@ import {CommentRepository} from "../repository/comment/comment-repository";
 import {CommentViewModel} from "../types/models/comment/comment-view-model";
 import {commentRepository, userRepository} from "../composition-root";
 import {createCustomResponse} from "../utils/errors/custromErrorObj/createCustomResponse";
+import {LikeService} from "./like-service";
+import {LikeDBModel} from "../types/models/like/Like-DB-model";
 
 
 export class CommentService {
@@ -13,7 +15,8 @@ export class CommentService {
 
     constructor(protected commentRepository:CommentRepository,
                 protected postQueryRepository:PostQueryRepository,
-                protected userRepository:UserRepository) {
+                protected userRepository:UserRepository,
+                protected likeService:LikeService) {
 
 
     }
@@ -44,49 +47,47 @@ export class CommentService {
     }
 
 
-    async setLikeStatus(likeStatus:string,commentId:string,userId:string) {
+    async setLikeStatus(likeStatus:"Like" | "Dislike" | "None", commentId:string, userId:string) {
 
         const isCommentExist = await this.commentRepository.isCommentExist(commentId)
         if(!isCommentExist) return createCustomResponse(false, 404, 'not exist')
 
-        const isLikesExist = await this.checkLikeIsLikeStatusForCommentAndUser(userId,commentId)
+
+        //get like if like exist or null
+        const like:LikeDBModel | null = await this.likeService.getUserLikeForTarget(userId,commentId,'comment')
 
 
         if(likeStatus === "None") {
 
-            if (!isLikesExist) return createCustomResponse(true, 204, 'like already has None status')
+           if (!like) return createCustomResponse(true, 204, 'like already has None status')
 
+            const isUserLikeDeleted = await this.likeService.deleteLikeById(like._id)
 
-            const isDeleteUserLike = await userRepository.deleteLikeStatus(commentId, userId)
-            const isDeleteCommentLike = await commentRepository.deleteLikeStatus(commentId, userId)
+            if (isUserLikeDeleted) return createCustomResponse(true, 204, 'successful')
 
-            if (isDeleteUserLike && isDeleteCommentLike) return createCustomResponse(true, 204, 'successful')
-
-            return createCustomResponse(false, 400, 'db err')
 
         } else {
 
-            if(isLikesExist) {
+            if(like) {
+                //if current like status the same with new like status, return
+                if(like.likeStatus === likeStatus) return createCustomResponse(true, 204, 'successful')
 
-                await userRepository.deleteLikeStatus(commentId, userId)
-                await commentRepository.deleteLikeStatus(commentId, userId)
+                const result = await this.likeService.updateLikeStatus(like._id,likeStatus)
+
+                if(result) return createCustomResponse(true, 204, 'successful')
+
+            } else {
+
+                const creatingLikeResult = await this.likeService.addLike('comment',commentId,likeStatus,userId)
+
+                if(creatingLikeResult)  return createCustomResponse(true, 204, 'successful')
 
             }
-
-
-
-            const creatingCommentLikeStatusResult = await commentRepository.createLikeStatus(commentId,userId,likeStatus)
-            const creatingUserLikeStatusResult = await userRepository.createLikeStatus(userId,commentId,likeStatus)
-
-            if(creatingCommentLikeStatusResult && creatingUserLikeStatusResult) {
-                return createCustomResponse(true, 204, 'successful')
-            }
-            return createCustomResponse(false, 500, 'db err')
-
 
 
         }
 
+        return createCustomResponse(false, 400, 'db err')
 
 
 

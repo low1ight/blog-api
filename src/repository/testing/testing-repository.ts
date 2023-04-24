@@ -3,6 +3,7 @@ import {Post} from "../../db/models/post";
 import {User} from "../../db/models/user";
 import {Device} from "../../db/models/device";
 import {Comment} from "../../db/models/comment";
+import {Like} from "../../db/models/like";
 
 export class TestingRepository  {
 
@@ -13,6 +14,7 @@ export class TestingRepository  {
         await User.deleteMany()
         await Device.deleteMany()
         await Comment.deleteMany()
+        await Like.deleteMany()
 
 
     }

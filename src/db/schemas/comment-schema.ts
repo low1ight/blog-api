@@ -15,19 +15,19 @@ export const commentSchema = new Schema<CommentDBType>({
     content: {type: String, required: true},
     postId: {type: ObjectId, required: true},
     commentatorInfo: {type: commentatorSchema, required: true},
-    likes: { type: [likeDislikeSchema], default: [] },
-    dislikes: { type: [likeDislikeSchema], default: [] },
-
-
 }, { timestamps: true ,toJSON: { virtuals: true } })
 
 
-
-
-commentSchema.virtual('likesCount').get(function() {
-    return this.likes.length;
+commentSchema.virtual('likes', {
+    ref: 'Like', // название модели
+    localField: '_id', // поле текущей коллекции
+    foreignField: 'targetId' // поле связанной коллекции
 });
 
-commentSchema.virtual('dislikesCount').get(function() {
-    return this.dislikes.length;
-});
+// commentSchema.virtual('likesCount').get(function() {
+//     return this.likes.length;
+// });
+//
+// commentSchema.virtual('dislikesCount').get(function() {
+//     return this.dislikes.length;
+// });

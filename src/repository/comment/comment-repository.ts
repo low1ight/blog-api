@@ -2,7 +2,7 @@ import {CommentInputModel} from "../../types/models/comment/comment-input-model"
 import {Comment} from "../../db/models/comment";
 import {Types} from "mongoose";
 import {UserDBType} from "../../types/models/user/user-DB-type";
-import {commentsObjToViewModel} from "../_mappers/toCommentViewModel";
+import {createdCommentToViewModel} from "../_mappers/toCommentViewModel";
 import {CommentViewModel} from "../../types/models/comment/comment-view-model";
 import {CommentDBType} from "../../types/models/comment/comment-DB-type";
 
@@ -11,7 +11,7 @@ export class CommentRepository  {
 
 
 
-    async createComment({content}:CommentInputModel,postId:string,user:UserDBType):Promise<CommentViewModel> {
+    async createComment({content}:CommentInputModel,postId:string,user:UserDBType):Promise<CommentViewModel>{
 
 
         const comment =  await Comment.create({
@@ -24,7 +24,8 @@ export class CommentRepository  {
         })
 
 
-        return commentsObjToViewModel(comment,null)
+
+        return createdCommentToViewModel(comment)
     }
 
 

@@ -8,12 +8,14 @@ import {CommentInputModel} from "../../../types/models/comment/comment-input-mod
 import {CommentViewModel} from "../../../types/models/comment/comment-view-model";
 import {CommentService} from "../../../domain/comment-service";
 import {PostQueryRepository} from "../../../repository/post/post-query-repository";
+import {LikeRepository} from "../../../repository/like/like-repository";
 
 export class PostCommentsController  {
 
 
     constructor(protected commentService:CommentService,
                 protected postQueryRepository:PostQueryRepository,
+                protected likeRepository:LikeRepository,
                 protected commentQueryRepository:CommentQueryRepository) {}
 
 
@@ -24,7 +26,7 @@ export class PostCommentsController  {
         if(!isPostExist) return res.sendStatus(404)
 
 
-        const commentUserActivity = req.userActivity?.commentActivity || null
+        const commentUserActivity = req.userActivity || null
 
 
         const query = commentQueryMapper(req.query)

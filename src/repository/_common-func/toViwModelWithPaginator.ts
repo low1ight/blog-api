@@ -1,5 +1,5 @@
 import {ViewModelWithPaginator} from "../../types/models/ViewModelWithPaginator";
-import {ActivityElem} from "../../types/models/user/user-DB-type";
+import {LikeDBModel} from "../../types/models/like/Like-DB-model";
 
 
 const calculatePageCount = (pageCount:number,pageSize:number) => {
@@ -14,7 +14,7 @@ const calculatePageCount = (pageCount:number,pageSize:number) => {
 
 
 
-export const toViwModelWithPaginator = (toViewModel:Function,items:any,pageNumber:number,pageSize:number,elementCount:number,userActivity:null | ActivityElem = null):ViewModelWithPaginator<[]> => {
+export const toViwModelWithPaginator = (toViewModel:Function,items:any,pageNumber:number,pageSize:number,elementCount:number,userActivity:null | LikeDBModel[] = null):ViewModelWithPaginator<[]> => {
 
 
     return {

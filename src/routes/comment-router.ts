@@ -6,13 +6,13 @@ import {commentValidator} from "../middlewares/validators/comment/comment-valida
 import {errFormatter} from "../middlewares/validators/validationResult";
 import {commentController} from "../composition-root";
 import {likeStatusValidator} from "../middlewares/validators/comment/likeStatusValidator";
-import {getUserActivity} from "../middlewares/getUserActivity";
+import {getCurrentUserCommentLikes} from "../middlewares/getCurrentUserLikes";
 
 export const commentRouter = Router()
 
 
 
-commentRouter.get('/:id',optionalBearerAuth,getUserActivity, commentController.getCommentById.bind(commentController))
+commentRouter.get('/:id',optionalBearerAuth,getCurrentUserCommentLikes, commentController.getCommentById.bind(commentController))
 
 commentRouter.put('/:id/like-status',bearerAuth,validateId,likeStatusValidator,errFormatter, commentController.setLikeStatus.bind(commentController))
 

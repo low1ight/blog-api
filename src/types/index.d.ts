@@ -1,12 +1,12 @@
 import {AccessTokenPayloadData} from "./models/jwt/AccessTokenPayloadData";
-import {UserActivity} from "./models/user/user-DB-type";
+import {LikeDBModel} from "./models/like/Like-DB-model";
 
 
 declare global {
     declare namespace Express {
         export interface Request {
             authUserData:AccessTokenPayloadData | null
-            userActivity:UserActivity | null
+            userActivity:LikeDBModel[] | null
         }
     }
 }

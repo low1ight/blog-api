@@ -6,7 +6,7 @@ import {basicAuth} from "../middlewares/basic-auth";
 import {bearerAuth, optionalBearerAuth} from "../middlewares/bearer-auth";
 import {commentValidator} from "../middlewares/validators/comment/comment-validator";
 import {postCommentsController, postController} from "../composition-root";
-import {getUserActivity} from "../middlewares/getUserActivity";
+import {getCurrentUserCommentLikes} from "../middlewares/getCurrentUserLikes";
 
 
 
@@ -30,6 +30,6 @@ postRouter.delete('/:id', basicAuth,validateId, postController.deletePost.bind(p
 
 
 
-postRouter.get('/:id/comments',optionalBearerAuth,getUserActivity, postCommentsController.getPostComments.bind(postCommentsController))
+postRouter.get('/:id/comments',optionalBearerAuth,getCurrentUserCommentLikes, postCommentsController.getPostComments.bind(postCommentsController))
 
 postRouter.post('/:id/comments', bearerAuth,commentValidator,errFormatter, postCommentsController.createComment.bind(postCommentsController))

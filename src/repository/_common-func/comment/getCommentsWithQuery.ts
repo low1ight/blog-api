@@ -6,10 +6,10 @@ import {ViewModelWithPaginator} from "../../../types/models/ViewModelWithPaginat
 import {PostViewModel} from "../../../types/models/post/post-view-model";
 import {Comment} from "../../../db/models/comment";
 import {commentsArrToViewModel} from "../../_mappers/toCommentViewModel";
-import {ActivityElem} from "../../../types/models/user/user-DB-type";
+import {LikeDBModel} from "../../../types/models/like/Like-DB-model";
 
 
-export const getCommentsWithQuery = async ({sortBy,sortDirection,pageNumber,pageSize}:PostQueryType,userActivity:null | ActivityElem,additionalParams:object = {}):Promise<ViewModelWithPaginator<PostViewModel[]>> => {
+export const getCommentsWithQuery = async ({sortBy,sortDirection,pageNumber,pageSize}:PostQueryType,userLikes:null | LikeDBModel[],additionalParams:object = {}):Promise<ViewModelWithPaginator<PostViewModel[]>> => {
 
 
     const sortObj = createSortObject(sortBy,sortDirection)
@@ -24,14 +24,15 @@ export const getCommentsWithQuery = async ({sortBy,sortDirection,pageNumber,page
 
     query.sort(sortObj)
 
+    query.populate('likes');
+
 
     const totalElemCount = await Comment.countDocuments(additionalParams).exec();
 
     const result = await query.exec();
 
 
-
-    return toViwModelWithPaginator(commentsArrToViewModel,result,pageNumber,pageSize,totalElemCount,userActivity)
+    return toViwModelWithPaginator(commentsArrToViewModel,result,pageNumber,pageSize,totalElemCount,userLikes)
 
 }
 

@@ -41,7 +41,7 @@ export class CommentController  {
 
     async getCommentById(req:RequestWithParams<IdModel>,res:Response) {
 
-         const commentUserActivity = req.userActivity?.commentActivity || null
+         const commentUserActivity = req.userActivity || null
 
         const comment:CommentViewModel | null = await this.commentQueryRepository.getCommentById(req.params.id,commentUserActivity)
 

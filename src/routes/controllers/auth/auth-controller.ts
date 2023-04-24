@@ -29,12 +29,12 @@ export class AuthController {
         if(!loginResult) return res.sendStatus(401)
 
         return res.status(200)
-            .cookie('refreshToken',loginResult.refreshToken,)
+            .cookie('refreshToken',loginResult.refreshToken,{httpOnly:true,secure:true})
             .json({accessToken:loginResult.accessToken})
 
     }
 
-//{httpOnly:true,secure:true}
+
     async logout(req:Request,res:Response) {
 
         const refreshToken = req.cookies.refreshToken
@@ -76,7 +76,7 @@ export class AuthController {
         if(!result.successful) return res.sendStatus(401)
 
         return res.status(200)
-            .cookie('refreshToken',result.content.refreshToken)
+            .cookie('refreshToken',result.content.refreshToken,{httpOnly:true,secure:true})
             .json({accessToken:result.content.accessToken})
 
 
