@@ -10,6 +10,8 @@ export class PostRepository  {
     async createPost({title, shortDescription, content, blogId}: PostInputModel, blogName: string):Promise<PostViewModel> {
 
 
+
+
         const newPost:PostDBType = await Post.create(
             {
                 title,

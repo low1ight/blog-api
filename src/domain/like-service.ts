@@ -35,8 +35,8 @@ export class LikeService {
     }
 
 
-    async setLikeStatus(likeStatus:"Like" | "Dislike" | "None", commentId:string, userId:string,likeTarget:string){
-        const like:LikeDBModel | null = await this.getUserLikeForTarget(userId,commentId,likeTarget)
+    async setLikeStatus(likeStatus:"Like" | "Dislike" | "None", targetId:string, userId:string,likeTarget:string){
+        const like:LikeDBModel | null = await this.getUserLikeForTarget(userId,targetId,likeTarget)
 
 
         if(likeStatus === "None") {
@@ -64,7 +64,7 @@ export class LikeService {
 
                 if(!user) return createCustomResponse(true, 404, 'user dont exist')
 
-                const creatingLikeResult = await this.addLike(likeTarget,commentId,likeStatus,userId,user.userData.login)
+                const creatingLikeResult = await this.addLike(likeTarget,targetId,likeStatus,userId,user.userData.login)
 
                 if(creatingLikeResult)  return createCustomResponse(true, 204, 'successful')
 

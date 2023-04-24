@@ -14,6 +14,8 @@ import {blogQueryMapper} from "../../query-mappers/post-query-mapper";
 import {PostInputQueryType} from "../../../types/queryType/post/post-input-query-type";
 import {PostQueryType} from "../../../types/queryType/post/post-query-type";
 import {ViewModelWithPaginator} from "../../../types/models/ViewModelWithPaginator";
+import {LikeStatusModel} from "../../../types/models/comment/like-status-input-model";
+import {CustomResponse} from "../../../utils/errors/custromErrorObj/createCustomResponse";
 
 
 export class PostController  {
@@ -31,6 +33,19 @@ export class PostController  {
         const posts:ViewModelWithPaginator<PostViewModel[]> = await this.postQueryRepository.getPosts(query)
 
         return res.json(posts)
+
+
+    }
+
+    async setLikeStatus(req: RequestWithParamsAndBody<IdModel,LikeStatusModel>, res: Response) {
+
+        const result:CustomResponse<string> = await this.postService.setLikeStatus(
+            req.body.likeStatus,
+            req.params.id,
+            req.authUserData!.userId)
+
+        return res.sendStatus(result.statusCode)
+
 
 
     }
