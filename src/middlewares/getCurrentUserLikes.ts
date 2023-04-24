@@ -24,3 +24,7 @@ const getCurrentUserLikes = async (req:Request, res:Response, next:NextFunction,
 export const getCurrentUserCommentLikes = async (req:Request, res:Response, next:NextFunction) => {
     return getCurrentUserLikes(req,res,next,'comment')
 }
+
+export const getCurrentUserPostLikes = async (req:Request, res:Response, next:NextFunction) => {
+    return getCurrentUserLikes(req,res,next,'post')
+}
