@@ -68,7 +68,7 @@ export const jwtService = new JwtService(deviceRepository)
 
 
 //services
-const likeService = new LikeService(likeRepository)
+const likeService = new LikeService(likeRepository,userRepository)
 const deviceService = new DeviceService(deviceRepository,jwtService)
 const userService = new UserService(userRepository)
 const blogService = new BlogService(blogRepository,blogQueryRepository)

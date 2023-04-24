@@ -2,19 +2,22 @@ import {LikeRepository} from "../repository/like/like-repository";
 import {Types} from "mongoose";
 import {LikeDBModel} from "../types/models/like/Like-DB-model";
 import {createCustomResponse} from "../utils/errors/custromErrorObj/createCustomResponse";
+import {UserRepository} from "../repository/user/user-repository";
 
 
 export class LikeService {
 
-    constructor(protected likeRepository:LikeRepository) {}
+    constructor(protected likeRepository:LikeRepository,
+                protected userRepository:UserRepository) {}
 
 
-    async addLike(likeTarget:string,targetId:string,likeStatus:"Like" | "Dislike",userId:string) {
+    async addLike(likeTarget:string,targetId:string,likeStatus:"Like" | "Dislike",userId:string,userLogin:string) {
 
         const likeObj = {
             likeTarget,
             targetId:new Types.ObjectId(targetId),
             likeStatus,
+            userLogin,
             userId:new Types.ObjectId(userId)
         }
 
@@ -57,7 +60,11 @@ export class LikeService {
 
             } else {
 
-                const creatingLikeResult = await this.addLike(likeTarget,commentId,likeStatus,userId)
+                const user = await this.userRepository.getUserById(userId)
+
+                if(!user) return createCustomResponse(true, 404, 'user dont exist')
+
+                const creatingLikeResult = await this.addLike(likeTarget,commentId,likeStatus,userId,user.userData.login)
 
                 if(creatingLikeResult)  return createCustomResponse(true, 204, 'successful')
 
