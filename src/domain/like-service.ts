@@ -1,6 +1,7 @@
 import {LikeRepository} from "../repository/like/like-repository";
 import {Types} from "mongoose";
 import {LikeDBModel} from "../types/models/like/Like-DB-model";
+import {createCustomResponse} from "../utils/errors/custromErrorObj/createCustomResponse";
 
 
 export class LikeService {
@@ -28,6 +29,44 @@ export class LikeService {
 
 
 
+    }
+
+
+    async setLikeStatus(likeStatus:"Like" | "Dislike" | "None", commentId:string, userId:string,likeTarget:string){
+        const like:LikeDBModel | null = await this.getUserLikeForTarget(userId,commentId,likeTarget)
+
+
+        if(likeStatus === "None") {
+
+            if (!like) return createCustomResponse(true, 204, 'like already has None status')
+
+            const isUserLikeDeleted = await this.deleteLikeById(like._id)
+
+            if (isUserLikeDeleted) return createCustomResponse(true, 204, 'successful')
+
+
+        } else {
+
+            if(like) {
+                //if current like status the same with new like status, return
+                if(like.likeStatus === likeStatus) return createCustomResponse(true, 204, 'successful')
+
+                const result = await this.updateLikeStatus(like._id,likeStatus)
+
+                if(result) return createCustomResponse(true, 204, 'successful')
+
+            } else {
+
+                const creatingLikeResult = await this.addLike(likeTarget,commentId,likeStatus,userId)
+
+                if(creatingLikeResult)  return createCustomResponse(true, 204, 'successful')
+
+            }
+
+
+        }
+
+        return createCustomResponse(false, 400, 'db err')
     }
 
 
