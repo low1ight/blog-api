@@ -11,8 +11,9 @@ import {errorObj} from "../../../utils/errors/errorObj";
 import {errorBody} from "../../../utils/errors/errorBody";
 import {TokensType} from "../../../types/models/jwt/TokensType";
 import {NewPasswordInputModel} from "../../../types/models/auth/new-password-input-model";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class AuthController {
 
     constructor(protected authService:AuthService,protected userQueryRepository:UserQueryRepository) {}

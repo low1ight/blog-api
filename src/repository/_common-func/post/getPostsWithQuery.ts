@@ -6,9 +6,10 @@ import {Post} from "../../../db/models/post";
 import {postsArrToViewModel} from "../../_mappers/toPostViewModel";
 import {ViewModelWithPaginator} from "../../../types/models/ViewModelWithPaginator";
 import {PostViewModel} from "../../../types/models/post/post-view-model";
+import {LikeDBModel} from "../../../types/models/like/Like-DB-model";
 
 
-export const getPostsWithQuery = async ({sortBy,sortDirection,pageNumber,pageSize}:PostQueryType,additionalParams:object = {}):Promise<ViewModelWithPaginator<PostViewModel[]>> => {
+export const getPostsWithQuery = async ({sortBy,sortDirection,pageNumber,pageSize}:PostQueryType,userPostsLikes:LikeDBModel[] | null,additionalParams:object = {}):Promise<ViewModelWithPaginator<PostViewModel[]>> => {
 
 
     const sortObj = createSortObject(sortBy,sortDirection)
@@ -24,9 +25,7 @@ export const getPostsWithQuery = async ({sortBy,sortDirection,pageNumber,pageSiz
 
     query.sort(sortObj)
 
-    query.setOptions({ lean : true });
-
-
+    query.populate('likes');
 
 
 
@@ -36,7 +35,7 @@ export const getPostsWithQuery = async ({sortBy,sortDirection,pageNumber,pageSiz
 
 
 
-    return toViwModelWithPaginator(postsArrToViewModel,result,pageNumber,pageSize,totalElemCount)
+    return toViwModelWithPaginator(postsArrToViewModel,result,pageNumber,pageSize,totalElemCount,userPostsLikes)
 
 }
 

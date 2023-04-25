@@ -6,10 +6,14 @@ import {registrationConfirmationValidator} from "../middlewares/validators/auth/
 import {sendCodeUsingEmailValidator} from "../middlewares/validators/auth/send-code-using-email-validator";
 import {rateLimiter} from "../middlewares/requestLimiter";
 import {newPasswordValidator} from "../middlewares/validators/auth/new-password-validator";
-import {authController} from "../composition-root";
+import {container} from "../composition-root";
+import {AuthController} from "./controllers/auth/auth-controller";
+
 
 
 export const authRouter = Router()
+
+const authController = container.resolve(AuthController)
 
 
 authRouter.post('/login',rateLimiter,authController.login.bind(authController))

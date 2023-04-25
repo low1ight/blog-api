@@ -8,5 +8,18 @@ export type PostViewModel = {
     blogId: string
     blogName: string
     createdAt:Date
+    extendedLikesInfo:{
+        likesCount:number
+        dislikesCount:number
+        myStatus:string
+        newestLikes:newestLikeType[]
+    }
 
+}
+
+
+type newestLikeType = {
+    addedAt:Date | string
+    userId:string
+    login:string
 }

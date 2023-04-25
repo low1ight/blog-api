@@ -4,7 +4,8 @@ import {IdModel} from "../../../types/models/common/id-model";
 import {DeviceService} from "../../../domain/device-service";
 import {JwtService} from "../../../application/jwt-service";
 import {DeviceQueryRepository} from "../../../repository/device/device-query-repository";
-
+import {injectable} from "inversify";
+@injectable()
 export class DeviceController  {
 
     constructor(protected jwtService:JwtService,

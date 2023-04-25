@@ -2,8 +2,9 @@ import {BlogInputModel} from "../../types/models/blog/blog-input-model";
 import {Blog} from "../../db/models/blog";
 import {blogObjToViewModel} from "../_mappers/toBlogViewModel";
 import {BlogViewModel} from "../../types/models/blog/blog-view-model";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class BlogRepository  {
 
 

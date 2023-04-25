@@ -16,7 +16,9 @@ import {DeviceType} from "../types/models/device/DeviceType";
 import {RefreshTokenPayloadData} from "../types/models/jwt/RefreshTokenPayloadData";
 import {DeviceRepository} from "../repository/device/device-repository";
 import {NewPasswordInputModel} from "../types/models/auth/new-password-input-model";
+import {injectable} from "inversify";
 
+@injectable()
 export class AuthService  {
 
     constructor(protected userRepository:UserRepository,

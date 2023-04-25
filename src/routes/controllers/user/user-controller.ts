@@ -9,7 +9,10 @@ import {UserViewModel} from "../../../types/models/user/user-view-model";
 import {UserInputModel} from "../../../types/models/user/user-input-model";
 import {UserService} from "../../../domain/user-service";
 import {IdModel} from "../../../types/models/common/id-model";
+import {injectable} from "inversify";
 
+
+@injectable()
 export class UserController {
 
     constructor(protected userService:UserService, protected userQueryRepository:UserQueryRepository) {}

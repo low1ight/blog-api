@@ -4,8 +4,9 @@ import {PostRepository} from "../repository/post/post-repository";
 import {PostQueryRepository} from "../repository/post/post-query-repository";
 import {LikeService} from "./like-service";
 import {createCustomResponse} from "../utils/errors/custromErrorObj/createCustomResponse";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class PostService {
 
     constructor(protected blogQueryRepository: BlogQueryRepository,

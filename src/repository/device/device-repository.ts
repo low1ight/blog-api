@@ -1,8 +1,9 @@
 import {Device} from "../../db/models/device";
 import {ObjectId} from "mongoose";
 import {DeviceType} from "../../types/models/device/DeviceType";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class DeviceRepository  {
 
     async createDevice(sessionId:string,title:string,ip:string,userId:ObjectId):Promise<DeviceType> {

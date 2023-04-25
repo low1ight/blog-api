@@ -10,8 +10,9 @@ import {ViewModelWithPaginator} from "../../../types/models/ViewModelWithPaginat
 import {PostQueryType} from "../../../types/queryType/post/post-query-type";
 import {blogQueryMapper} from "../../query-mappers/post-query-mapper";
 import {PostInputQueryType} from "../../../types/queryType/post/post-input-query-type";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class BlogPostsController  {
 
 
@@ -29,7 +30,9 @@ export class BlogPostsController  {
 
         const query:PostQueryType = blogQueryMapper(req.query)
 
-        const posts: ViewModelWithPaginator<PostViewModel[]> = await this.postQueryRepository.getBlogPosts(query,blogId)
+        const userPostsLikes = req.userActivity || null
+
+        const posts: ViewModelWithPaginator<PostViewModel[]> = await this.postQueryRepository.getBlogPosts(query,userPostsLikes,blogId)
 
         return res.json(posts)
     }

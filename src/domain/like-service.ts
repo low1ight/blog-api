@@ -3,8 +3,9 @@ import {Types} from "mongoose";
 import {LikeDBModel} from "../types/models/like/Like-DB-model";
 import {createCustomResponse} from "../utils/errors/custromErrorObj/createCustomResponse";
 import {UserRepository} from "../repository/user/user-repository";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class LikeService {
 
     constructor(protected likeRepository:LikeRepository,

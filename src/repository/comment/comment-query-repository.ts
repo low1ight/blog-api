@@ -5,9 +5,10 @@ import {commentsObjToViewModel} from "../_mappers/toCommentViewModel";
 
 import {LikeDBModel} from "../../types/models/like/Like-DB-model";
 import {CommentPopulatedType} from "../../types/models/comment/comment-DB-type";
+import {injectable} from "inversify";
 
 
-
+@injectable()
 export class CommentQueryRepository  {
 
     async getPostComments(query:CommentQueryType,postId:string,userActivity:null | any) {

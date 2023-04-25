@@ -6,8 +6,9 @@ import {CommentViewModel} from "../types/models/comment/comment-view-model";
 import {commentRepository, userRepository} from "../composition-root";
 import {createCustomResponse} from "../utils/errors/custromErrorObj/createCustomResponse";
 import {LikeService} from "./like-service";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class CommentService {
 
 

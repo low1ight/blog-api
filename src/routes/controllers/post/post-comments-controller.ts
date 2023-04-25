@@ -9,7 +9,9 @@ import {CommentViewModel} from "../../../types/models/comment/comment-view-model
 import {CommentService} from "../../../domain/comment-service";
 import {PostQueryRepository} from "../../../repository/post/post-query-repository";
 import {LikeRepository} from "../../../repository/like/like-repository";
+import {injectable} from "inversify";
 
+@injectable()
 export class PostCommentsController  {
 
 

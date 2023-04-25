@@ -1,6 +1,7 @@
 import {RequestLimiterRepository} from "../repository/requestLimiter/requestLimiter-repository";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class RequestLimiterService  {
 
     constructor(protected requestLimiterRepository:RequestLimiterRepository) {

@@ -16,8 +16,9 @@ import {PostQueryType} from "../../../types/queryType/post/post-query-type";
 import {ViewModelWithPaginator} from "../../../types/models/ViewModelWithPaginator";
 import {LikeStatusModel} from "../../../types/models/comment/like-status-input-model";
 import {CustomResponse} from "../../../utils/errors/custromErrorObj/createCustomResponse";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class PostController  {
 
 
@@ -30,7 +31,9 @@ export class PostController  {
 
         const query:PostQueryType = blogQueryMapper(req.query)
 
-        const posts:ViewModelWithPaginator<PostViewModel[]> = await this.postQueryRepository.getPosts(query)
+        const userPostsLikes = req.userActivity || null
+
+        const posts:ViewModelWithPaginator<PostViewModel[]> = await this.postQueryRepository.getPosts(query,userPostsLikes)
 
         return res.json(posts)
 
@@ -53,7 +56,9 @@ export class PostController  {
 
     async getPostById(req: RequestWithParams<IdModel>, res: Response) {
 
-        const post:null | PostViewModel = await this.postQueryRepository.getPostById(req.params.id)
+        const userPostsLikes = req.userActivity || null
+
+        const post:null | PostViewModel = await this.postQueryRepository.getPostById(req.params.id,userPostsLikes)
 
         if(!post) return res.sendStatus(404)
 

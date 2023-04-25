@@ -5,7 +5,8 @@ import {UserViewModel} from "../types/models/user/user-view-model";
 import { v4 as uuidv4 } from 'uuid';
 import add from 'date-fns/add'
 import {UserDBType} from "../types/models/user/user-DB-type";
-
+import {injectable} from "inversify";
+@injectable()
 export class UserService  {
 
     constructor(protected userRepository:UserRepository) {}

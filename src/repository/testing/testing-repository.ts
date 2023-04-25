@@ -4,7 +4,9 @@ import {User} from "../../db/models/user";
 import {Device} from "../../db/models/device";
 import {Comment} from "../../db/models/comment";
 import {Like} from "../../db/models/like";
+import {injectable} from "inversify";
 
+@injectable()
 export class TestingRepository  {
 
     async deleteAllData():Promise<void> {

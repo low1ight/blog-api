@@ -1,8 +1,9 @@
 import {BlogInputModel} from "../types/models/blog/blog-input-model";
 import {BlogRepository} from "../repository/blog/blog-repository";
 import {BlogQueryRepository} from "../repository/blog/blog-query-repository";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class BlogService  {
 
 

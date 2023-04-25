@@ -1,6 +1,7 @@
 import {RequestLimiter} from "../../db/models/requestLimiter";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class RequestLimiterRepository  {
 
 

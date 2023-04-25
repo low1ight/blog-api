@@ -17,9 +17,9 @@ export const postRouter = Router()
 
 
 
-postRouter.get('/', postController.getPosts.bind(postController))
+postRouter.get('/', optionalBearerAuth,getCurrentUserPostLikes, postController.getPosts.bind(postController))
 
-postRouter.get('/:id', validateId, postController.getPostById.bind(postController))
+postRouter.get('/:id',optionalBearerAuth,getCurrentUserPostLikes, validateId, postController.getPostById.bind(postController))
 
 postRouter.post('/', basicAuth,postValidator,errFormatter, postController.createPost.bind(postController))
 

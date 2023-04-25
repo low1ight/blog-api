@@ -3,8 +3,9 @@ import {getUsersWithQuery} from "../_common-func/user/getUsersWithQuery";
 import {UserDBType} from "../../types/models/user/user-DB-type";
 import {userToAuthMeModel} from "../_mappers/userToAuthMeModel";
 import {User} from "../../db/models/user";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class UserQueryRepository {
 
     async getUser(query:UserQueryType) {

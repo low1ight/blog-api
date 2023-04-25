@@ -1,6 +1,8 @@
 import nodemailer from 'nodemailer'
+import {injectable} from "inversify";
 
 
+@injectable()
 export class EmailManager {
 
     async sendConfirmationEmailCode(recipient:string, confirmationCode:string) {

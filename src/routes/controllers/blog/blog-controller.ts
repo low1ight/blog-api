@@ -14,13 +14,14 @@ import {BlogQueryType} from "../../../types/queryType/blog/blog-query-type";
 import {blogQueryMapper} from "../../query-mappers/blog-query-mapper";
 import {BlogInputQueryType} from "../../../types/queryType/blog/blog-input-query-type";
 import {ViewModelWithPaginator} from "../../../types/models/ViewModelWithPaginator";
+import {injectable} from "inversify";
 
 
 
 
 
 
-
+@injectable()
 export class BlogController  {
 
   constructor(protected blogService:BlogService,

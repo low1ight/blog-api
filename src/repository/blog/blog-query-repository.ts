@@ -5,8 +5,9 @@ import {BlogViewModel} from "../../types/models/blog/blog-view-model";
 import {BlogQueryType} from "../../types/queryType/blog/blog-query-type";
 import {getBlogsWithQuery} from "../_common-func/blog/getBlogsWithQuery";
 import {ViewModelWithPaginator} from "../../types/models/ViewModelWithPaginator";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class BlogQueryRepository  {
 
 

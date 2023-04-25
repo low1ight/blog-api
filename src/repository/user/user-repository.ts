@@ -4,8 +4,9 @@ import {UserInputModel} from "../../types/models/user/user-input-model";
 import {UserConfirmation, UserDBType, UserActivity} from "../../types/models/user/user-DB-type";
 import {UserViewModel} from "../../types/models/user/user-view-model";
 import {Types} from "mongoose";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class UserRepository  {
 
 

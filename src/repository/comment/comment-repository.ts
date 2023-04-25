@@ -5,8 +5,9 @@ import {UserDBType} from "../../types/models/user/user-DB-type";
 import {createdCommentToViewModel} from "../_mappers/toCommentViewModel";
 import {CommentViewModel} from "../../types/models/comment/comment-view-model";
 import {CommentDBType} from "../../types/models/comment/comment-DB-type";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class CommentRepository  {
 
 

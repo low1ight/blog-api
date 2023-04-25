@@ -5,8 +5,9 @@ import {createCustomResponse, CustomResponse} from "../utils/errors/custromError
 import {RefreshTokenPayloadData} from "../types/models/jwt/RefreshTokenPayloadData";
 import {DeviceType} from "../types/models/device/DeviceType";
 import {JwtService} from "../application/jwt-service";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class DeviceService {
 
 

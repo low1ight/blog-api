@@ -1,8 +1,9 @@
 import {LikeModel} from "../../types/models/like/Like-model";
 import {Like} from "../../db/models/like";
 import {Types} from "mongoose";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class LikeRepository {
 
     async addLike(likeObj:LikeModel) {

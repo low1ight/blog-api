@@ -8,8 +8,9 @@ import {CommentViewModel} from "../../../types/models/comment/comment-view-model
 import {LikeStatusModel} from "../../../types/models/comment/like-status-input-model";
 import {CustomResponse} from "../../../utils/errors/custromErrorObj/createCustomResponse";
 import {UserRepository} from "../../../repository/user/user-repository";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class CommentController  {
 
     constructor(protected commentService:CommentService,

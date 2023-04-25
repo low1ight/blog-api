@@ -19,9 +19,9 @@ export const commentSchema = new Schema<CommentDBType>({
 
 
 commentSchema.virtual('likes', {
-    ref: 'Like', // название модели
-    localField: '_id', // поле текущей коллекции
-    foreignField: 'targetId' // поле связанной коллекции
+    ref: 'Like',
+    localField: '_id',
+    foreignField: 'targetId'
 });
 
 // commentSchema.virtual('likesCount').get(function() {
